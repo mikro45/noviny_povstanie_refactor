@@ -3,7 +3,8 @@
 
 import pygame
 from pygame.locals import *
-from konstanty import *
+
+import konstanty as kon
 
 class Menu():
     """Trieda Menu vykresľuje menu v hre."""
@@ -73,14 +74,14 @@ class Menu():
 
     # Funkcie pre vykresľovanie rôznych menu
     def vykresli_menu(self):
-        menu = pygame.Surface((VELKOST_OKNA_X, VELKOST_OKNA_Y))
+        menu = pygame.Surface((kon.VELKOST_OKNA_X, kon.VELKOST_OKNA_Y))
         menu.blit(self.pozadie, (0, 0))
                 
         i = 0
         # Vykreslenie vsetkch poloziek
         while i < len(self.polozky):
-          x = VELKOST_OKNA_X / 11 
-          y = VELKOST_OKNA_Y / 11 * i + VELKOST_OKNA_Y / 10
+          x = kon.VELKOST_OKNA_X / 11 
+          y = kon.VELKOST_OKNA_Y / 11 * i + kon.VELKOST_OKNA_Y / 10
           text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)
           pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
           menu.blit(text, (x, y))
@@ -95,8 +96,8 @@ class Menu():
 
         # Vykreslenie všetkých riadkov - textu
         while i < len(self.riadky):
-          x = VELKOST_OKNA_X / 11 
-          y = VELKOST_OKNA_Y / 16 * i + VELKOST_OKNA_Y / 5          
+          x = kon.VELKOST_OKNA_X / 11 
+          y = kon.VELKOST_OKNA_Y / 16 * i + kon.VELKOST_OKNA_Y / 5          
           text = self.font_riadky.render(self.riadky[i], 1, self.farba_cierna)
           menu.blit(text,(x, y))
           i += 1
@@ -110,8 +111,8 @@ class Menu():
         i = 0
 
         while i < len(self.polozky):
-          x = VELKOST_OKNA_X / 3.5 * i + VELKOST_OKNA_X / 3.5
-          y = VELKOST_OKNA_Y / 2
+          x = kon.VELKOST_OKNA_X / 3.5 * i + kon.VELKOST_OKNA_X / 3.5
+          y = kon.VELKOST_OKNA_Y / 2
 
           text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)
           rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_neaktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
@@ -131,13 +132,13 @@ class Menu():
         i = 0
 
         while i < len(self.riadky):
-          x = VELKOST_OKNA_X / 5
-          y = VELKOST_OKNA_Y / 5 * i + 100
+          x = kon.VELKOST_OKNA_X / 5
+          y = kon.VELKOST_OKNA_Y / 5 * i + 100
           text = self.font_velky.render(self.riadky[i], 1, self.farba_cierna)
           if i > 0:
             text = self.font_stredny.render(self.riadky[i], 1, self.farba_biela)
           rect = text.get_rect()
-          rect.centerx = VELKOST_OKNA_X / 2
+          rect.centerx = kon.VELKOST_OKNA_X / 2
           rect.y = y
           obrazovka.blit(text, rect)
          
@@ -146,7 +147,7 @@ class Menu():
         pygame.display.update()
         return obrazovka
 
-class Menu_Obchod(Menu):
+class MenuObchod(Menu):
     """Trieda Menu_Obchod vykresľuje obchod v hre"""
 
     def __init__(self):
@@ -194,7 +195,7 @@ class Menu_Obchod(Menu):
 
     # Vykresleni obchodu
     def vykresli_obchod_menu(self, index, cena, meno, extra = ""):
-        menu = pygame.Surface((VELKOST_OKNA_X, VELKOST_OKNA_Y))
+        menu = pygame.Surface((kon.VELKOST_OKNA_X, kon.VELKOST_OKNA_Y))
         menu.blit(self.pozadie, (0, 0))
 
         i = 0
@@ -224,7 +225,7 @@ class Menu_Obchod(Menu):
 
         
         while i < len(self.polozky):
-            x = VELKOST_OKNA_X / 3.3 * i + VELKOST_OKNA_X / 4
+            x = kon.VELKOST_OKNA_X / 3.3 * i + kon.VELKOST_OKNA_X / 4
             y = 670
 
             text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)

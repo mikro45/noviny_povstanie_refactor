@@ -3,7 +3,8 @@
 
 import pygame
 from pygame.locals import *
-from konstanty import *
+
+import konstanty as kon
 
 class Strela(pygame.sprite.Sprite):
     """Trieda Strela vykresľuje vystrelené strely hráča (Tabletu)."""
@@ -25,7 +26,7 @@ class Strela(pygame.sprite.Sprite):
             self.kill()
 
 
-class strela_noviny(Strela):
+class StrelaNoviny(Strela):
     """Trieda Strela vykresľuje vystrelené strely nepriateľov a dedí z triedy Strela."""
 
     def __init__(self, pozicia):
@@ -36,7 +37,7 @@ class strela_noviny(Strela):
 
     def update(self):
         """Umožnuje pohyb (let) strely."""
-        if self.rect.top < VELKOST_OKNA_Y:
+        if self.rect.top < kon.VELKOST_OKNA_Y:
             self.rect.top += 6
         # Ak je strela mimo obrazovky, tak sa strela odstráni (zabije)
         else:

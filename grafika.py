@@ -3,7 +3,8 @@
 
 import pygame
 from pygame.locals import *
-from konstanty import *
+
+import konstanty as kon
 
 class Explozia(pygame.sprite.Sprite):
     """Trieda Explozia vykresľuje explózie."""
@@ -42,4 +43,4 @@ class Hranica(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('obrazky/ui/hranica.bmp').convert()
         self.rect = self.image.get_rect()
-        self.rect.topleft = [0, VELKOST_OKNA_Y + 89]
+        self.rect.topleft = [0, kon.VELKOST_OKNA_Y + 89]

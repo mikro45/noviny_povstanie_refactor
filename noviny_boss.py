@@ -3,9 +3,10 @@
 
 import pygame
 from pygame.locals import *
-from konstanty import *
 
-class Noviny_boss_12(pygame.sprite.Sprite):
+import konstanty as kon
+
+class NovinyBoss12(pygame.sprite.Sprite):
     """Vykresľuje 1. a 2. Boss-a hry"""
     def __init__(self, uroven = 1):
         pygame.sprite.Sprite.__init__(self)
@@ -19,7 +20,7 @@ class Noviny_boss_12(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
         
-        self.rect.centerx = VELKOST_OKNA_X / 2
+        self.rect.centerx = kon.VELKOST_OKNA_X / 2
         self.rect.centery = - 100       
         
         
@@ -33,7 +34,7 @@ class Noviny_boss_12(pygame.sprite.Sprite):
             if self.rect.top < 80:
                 self.rect.top = self.rect.top + self.smer[1]
             # Boss sa hýbe zo strany na stranu a popri tom strieľa
-            if self.rect.left < 0 or self.rect.left > VELKOST_OKNA_X - self.rect.width:
+            if self.rect.left < 0 or self.rect.left > kon.VELKOST_OKNA_X - self.rect.width:
                 self.smer[0] = -self.smer[0]
             if self.rect.top > 79:
                 self.rect.left = self.rect.left + self.smer[0]        

@@ -3,7 +3,6 @@
 
 import pygame
 from pygame.locals import *
-from konstanty import *
 
 class Skore(pygame.sprite.Sprite):
     """Trieda Skore vykresľuje skóre na obrazovke."""
@@ -52,7 +51,7 @@ class Skore(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = [0, 2]
         
-class Skore_bar(pygame.sprite.Sprite):
+class SkoreBar(pygame.sprite.Sprite):
     
     def __init__(self):
         """Vykresľuje podklad(bar) pre skóre"""
