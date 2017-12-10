@@ -1,4 +1,4 @@
-"# git-refactoring-mip-2017-mikro45" 
+# git-refactoring-mip-2017-mikro45
 
 Videohra programovana pre rocnikovy projekt na strednej skole.
 
