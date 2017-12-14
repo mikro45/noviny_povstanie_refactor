@@ -41,7 +41,7 @@ import math
 import pygame
 from pygame.locals import *
 
-# Globálne premenné
+# Globálne konštanty
 import konstanty as kon
 
 # Importovanie tried z modulov
@@ -76,7 +76,7 @@ def main():
     STAV_MENU_AKO = 3
     STAV_V_HRE = 4
     STAV_MENU_OBCHOD = 5
-    STAV_MENU_PAUSE = 6
+    STAV_MENU_PAUZA = 6
 
 
     # Načítanie modulu pygame
@@ -100,31 +100,31 @@ def main():
     uroven_1 = True
 
     # Premenné slúžiace na pohyb strel v hre
-    cas_sk_strely = 0
-    cas_sk_strely_noviny = 0
+    cas_objekt_strela = 0
+    cas_objekt_strela_noviny = 0
     # Premenné slúžiace na umiernený pohyb v menu medzi položkami
     oneskorenie_enter = 0
     oneskorenie_sipky = 0
 
     # Premenné určujúce základné hodnoty obchodu
-    ob_tablet_rychlost = 9.0
-    ob_tablet_rychlost_lvl = 1
-    ob_strelba_rychlost = 300
-    ob_strelba_rychlost_lvl = 1
-    ob_strela_pocet = 1
+    obchod_tablet_rychlost = 9.0
+    obchod_tablet_rychlost_lvl = 1
+    obchod_strelba_rychlost = 300
+    obchod_strelba_rychlost_lvl = 1
+    obchod_strela_pocet = 1
 
-    # Pomocné premenné pre bochod
-    index_obchod = 0
-    cena = 0
-    meno = ""
-    extra = ""
+    # Pomocné premenné pre obchod
+    obchod_index = 0
+    obchod_cena = 0
+    obchod_meno = ""
+    obchod_extra = ""
     obchod = False
     obchod_pokracuj = False
 
     # Premenná určujúca počiatočný počet životov Boss-ov
-    boss_hp = 100
+    noviny_boss_hp = 100
 
-    # Načítanie skóra zo súbora
+    # Načítanie skóre zo súbora
     try:
         HIGHSCORE = [line.rstrip('\n') for line in open('highscore.txt')]
     except IOError:
@@ -143,36 +143,36 @@ def main():
 
     # Prispôsobenie herného okna
     pygame.display.set_caption('Noviny - Povstanie')
-    pygame.mouse.set_visible(0)
+    pygame.mouse.set_visible(1)
     ikona = pygame.image.load("ikona.ico")
     pygame.display.set_icon(ikona)
 
     # Vytvorenie skupín objektov a pridanie niektorých objektov do skupín
-    sk_noviny = pygame.sprite.RenderUpdates()
-    sk_noviny_ozbrojene = pygame.sprite.RenderUpdates()
-    sk_noviny_boss = pygame.sprite.RenderUpdates()
-    sk_noviny_bonus = pygame.sprite.RenderUpdates()
+    objekt_noviny = pygame.sprite.RenderUpdates()
+    objekt_noviny_ozbrojene = pygame.sprite.RenderUpdates()
+    objekt_noviny_boss = pygame.sprite.RenderUpdates()
+    objekt_noviny_bonus = pygame.sprite.RenderUpdates()
 
-    sk_skore = pygame.sprite.RenderUpdates()
-    sk_skore.add(skore.Skore(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore))
+    objekt_skore = pygame.sprite.RenderUpdates()
+    objekt_skore.add(skore.Skore(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore))
 
-    sk_tablet = pygame.sprite.RenderUpdates()
-    sk_tablet.add(tablet.Tablet())
+    objekt_tablet = pygame.sprite.RenderUpdates()
+    objekt_tablet.add(tablet.Tablet())
     
-    sk_strely = pygame.sprite.RenderUpdates()
+    objekt_strela = pygame.sprite.RenderUpdates()
 
-    sk_explozie = pygame.sprite.RenderUpdates()
+    objekt_explozia = pygame.sprite.RenderUpdates()
     
-    sk_strely_noviny = pygame.sprite.RenderUpdates()
+    objekt_strela_noviny = pygame.sprite.RenderUpdates()
 
-    hranica = pygame.sprite.RenderUpdates()
-    hranica.add(grafika.Hranica())
+    objekt_hranica = pygame.sprite.RenderUpdates()
+    objekt_hranica.add(grafika.Hranica())
 
-    skore_bar = pygame.sprite.RenderUpdates()
-    skore_bar.add(skore.SkoreBar())
+    objekt_skore_bar = pygame.sprite.RenderUpdates()
+    objekt_skore_bar.add(skore.SkoreBar())
     
     # Načítanie triedy Zvuky
-    zvuk = zvuky.Zvuky()
+    objekt_zvuky = zvuky.Zvuky()
 
     # Zadefinovanie všetkych položiek všetkých menu
     menu_hlavne = menu.Menu()
@@ -192,7 +192,7 @@ def main():
     menu_ako.riadok_pridaj(u"V bonusových úrovniach čakaj nečakané ;).")
     menu_ako.riadok_pridaj("")
     menu_ako.riadok_pridaj(u"Cieľ hry:")
-    menu_ako.riadok_pridaj(u"Zničiť všetky sk_noviny!")
+    menu_ako.riadok_pridaj(u"Zničiť všetky objekt_noviny!")
     menu_ako.riadok_pridaj("")
     menu_ako.riadok_pridaj(u"Najvyššie skóre: " + str(HIGHSCORE[0]))
 
@@ -200,9 +200,9 @@ def main():
     menu_obchod.polozka_pridaj(u"Kúpiť")
     menu_obchod.polozka_pridaj(u"Pokračovať v hre")
 
-    menu_pause = menu.Menu()
-    menu_pause.polozka_pridaj(u"Pokračovať v hre")
-    menu_pause.polozka_pridaj(u"Hlavné menu")
+    menu_pauza = menu.Menu()
+    menu_pauza.polozka_pridaj(u"Pokračovať v hre")
+    menu_pauza.polozka_pridaj(u"Hlavné menu")
 
     menu_prehra = menu.Menu()
     menu_prehra.riadok_pridaj("PREHRAL SI!")
@@ -212,7 +212,7 @@ def main():
 
     menu_vyhra = menu.Menu()
     menu_vyhra.riadok_pridaj("VYHRAL SI!")
-    menu_vyhra.riadok_pridaj(u"Porazil si všetky sk_noviny!")
+    menu_vyhra.riadok_pridaj(u"Porazil si všetky objekt_noviny!")
     menu_vyhra.riadok_pridaj(u"Snáď už natrvalo!")
     menu_vyhra.riadok_pridaj(u"Stlač ESC pre návrat do menu.")
 
@@ -243,7 +243,7 @@ def main():
                 vystrelene = 0
 
             if stlacena_klavesa[K_ESCAPE] and cas > oneskorenie_enter:
-                stav = STAV_MENU_PAUSE
+                stav = STAV_MENU_PAUZA
                 oneskorenie_enter = cas + 250
 
             if stlacena_klavesa[K_m]:
@@ -252,158 +252,158 @@ def main():
                 skore_zivoty += 1
                
 
-            # Vystrelenie sk_strely
-            if vystrelene == 1 and cas > cas_sk_strely:
-                cas_sk_strely = cas + ob_strelba_rychlost
-                for p in range(0, ob_strela_pocet):
-                  a, b, c, d = tablet_zoznam[0]
-                  if p == 2:
-                    sk_strely.add(strela.Strela((a+25-(1*20), b-29)))
+            # Vystrelenie objekt_strela
+            if vystrelene == 1 and cas > cas_objekt_strela:
+                cas_objekt_strela = cas + obchod_strelba_rychlost
+                for pocet_strel in range(0, obchod_strela_pocet):
+                  suradnica_x, suradnica_y, rozmer_a, rozmer_b = zoznam_tablet[0]
+                  if pocet_strel == 2:
+                    objekt_strela.add(strela.Strela((suradnica_x + 25 - (1 * 20), suradnica_y - 29)))
                     break                  
-                  sk_strely.add(strela.Strela((a+25+(p*20), b-29)))
+                  objekt_strela.add(strela.Strela((suradnica_x + 25 + (pocet_strel * 20), suradnica_y - 29)))
 
-                zvuk.strela_p()
+                objekt_zvuky.strela_p()
 
 
             # Odstránenie všetkých objektov z obrazovky,
             # aby nedošlo k efektu, kedy objekty pri pohybe nechávajú
             # za sebou svojú vlastnú stopu
-            sk_tablet.clear(obrazovka, pozadie)
-            sk_noviny.clear(obrazovka, pozadie)
-            sk_noviny_ozbrojene.clear(obrazovka, pozadie)
-            sk_noviny_boss.clear(obrazovka, pozadie)
-            sk_noviny_bonus.clear(obrazovka, pozadie) 
-            sk_strely.clear(obrazovka, pozadie)
-            sk_strely_noviny.clear(obrazovka, pozadie)
-            sk_explozie.clear(obrazovka, pozadie)
-            hranica.clear(obrazovka, pozadie)
-            skore_bar.clear(obrazovka, pozadie)
-            sk_skore.clear(obrazovka, pozadie)
+            objekt_tablet.clear(obrazovka, pozadie)
+            objekt_noviny.clear(obrazovka, pozadie)
+            objekt_noviny_ozbrojene.clear(obrazovka, pozadie)
+            objekt_noviny_boss.clear(obrazovka, pozadie)
+            objekt_noviny_bonus.clear(obrazovka, pozadie) 
+            objekt_strela.clear(obrazovka, pozadie)
+            objekt_strela_noviny.clear(obrazovka, pozadie)
+            objekt_explozia.clear(obrazovka, pozadie)
+            objekt_hranica.clear(obrazovka, pozadie)
+            objekt_skore_bar.clear(obrazovka, pozadie)
+            objekt_skore.clear(obrazovka, pozadie)
 
 
             # Aktualizácia všetkých objektov - zavolanie metód update v triedach
-            sk_tablet.update(smer, ob_tablet_rychlost)
-            sk_noviny.update(cas)
-            sk_noviny_ozbrojene.update(cas)
-            sk_noviny_boss.update(cas)
-            sk_noviny_bonus.update(cas)
-            sk_strely.update()
-            sk_strely_noviny.update()
-            sk_explozie.update(cas)
+            objekt_tablet.update(smer, obchod_tablet_rychlost)
+            objekt_noviny.update(cas)
+            objekt_noviny_ozbrojene.update(cas)
+            objekt_noviny_boss.update(cas)
+            objekt_noviny_bonus.update(cas)
+            objekt_strela.update()
+            objekt_strela_noviny.update()
+            objekt_explozia.update(cas)
            
 
             # Detekcia kolízie objektov
-            for i in pygame.sprite.groupcollide(sk_noviny, sk_strely, True, True):
-                # a,b = x,y súradnice objektu, c,d = šírka a výška objektu
-                a, b, c, d = i.rect
+            for objekt in pygame.sprite.groupcollide(objekt_noviny, objekt_strela, True, True):
+                # a,b = suradnica_x,suradnica_y súradnice objektu, c,d = šírka a výška objektu
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                 # vytvorenie explózie a pripísanie skóre a peňazí
-                sk_explozie.add(grafika.Explozia((a-20, b-20)))
+                objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_peniaze += 10
                 skore_skore += 15
                 # Spustenie zvuku explózie
-                zvuk.explozia_p()
+                objekt_zvuky.explozia_p()
 
-            for i in pygame.sprite.groupcollide(sk_tablet, sk_noviny, False, True):
-                a, b, c, d = i.rect
-                sk_explozie.add(grafika.Explozia((a-20, b-20)))
+            for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_noviny, False, True):
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                zvuk.poskodenie_p()
+                objekt_zvuky.poskodenie_p()
 
-            for i in pygame.sprite.groupcollide(sk_noviny_ozbrojene, sk_strely, True, True):
-                a, b, c, d = i.rect
-                sk_explozie.add(grafika.Explozia((a-20, b-20)))
+            for objekt in pygame.sprite.groupcollide(objekt_noviny_ozbrojene, objekt_strela, True, True):
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_peniaze += 15
                 skore_skore += 20
-                zvuk.explozia_p()
+                objekt_zvuky.explozia_p()
 
-            for i in pygame.sprite.groupcollide(sk_tablet, sk_noviny_ozbrojene, False, True):
-                a, b, c, d = i.rect
-                sk_explozie.add(grafika.Explozia((a-20, b-20)))
+            for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_noviny_ozbrojene, False, True):
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                zvuk.poskodenie_p()
+                objekt_zvuky.poskodenie_p()
 
-            for i in pygame.sprite.groupcollide(sk_tablet, sk_strely_noviny, False, True):
-                a, b, c, d = i.rect
-                sk_explozie.add(grafika.Explozia((a-20, b-20)))
+            for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_strela_noviny, False, True):
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                zvuk.poskodenie_p()
+                objekt_zvuky.poskodenie_p()
 
 
-            for i in pygame.sprite.groupcollide(hranica, sk_noviny, False, True):
+            for objekt in pygame.sprite.groupcollide(objekt_hranica, objekt_noviny, False, True):
                 skore_zivoty_zakladne -= 1
                 
-            for i in pygame.sprite.groupcollide(hranica, sk_noviny_ozbrojene, False, True):
+            for objekt in pygame.sprite.groupcollide(objekt_hranica, objekt_noviny_ozbrojene, False, True):
                 skore_zivoty_zakladne -= 1
 
-            for i in pygame.sprite.groupcollide(hranica, sk_noviny_bonus, False, True):
+            for objekt in pygame.sprite.groupcollide(objekt_hranica, objekt_noviny_bonus, False, True):
                 pass
 
             # Detekcia kolízie pre Boss-ov
-            for i in pygame.sprite.groupcollide(sk_noviny_boss, sk_strely, False, True):
-                a, b, c, d = i.rect
-                sk_explozie.add(grafika.Explozia((a+random.randrange(0,384), b+250)))
-                boss_hp -= 1
-                if boss_hp == 0:
+            for objekt in pygame.sprite.groupcollide(objekt_noviny_boss, objekt_strela, False, True):
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                objekt_explozia.add(grafika.Explozia((suradnica_x + random.randrange(0, 384), suradnica_y + 250)))
+                noviny_boss_hp -= 1
+                if noviny_boss_hp == 0:
                     skore_peniaze += 500
                     skore_skore += 1000
-                    sk_noviny_boss.empty()
+                    objekt_noviny_boss.empty()
                     
             # Detekcia kolízie v bonusovej úrovni
             if skore_uroven == 1 and skore_pod_uroven == 6:
-                for i in pygame.sprite.groupcollide(sk_tablet, sk_noviny_bonus, False, True):
-                    a, b, c, d = i.rect
-                    sk_explozie.add(grafika.Explozia((a-20, b-20)))
+                for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_noviny_bonus, False, True):
+                    suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                    objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                     skore_peniaze += 10
-                    zvuk.explozia_p()
+                    objekt_zvuky.explozia_p()
                     
             if skore_uroven == 3 and skore_pod_uroven == 6:
-                for i in pygame.sprite.groupcollide(sk_noviny_bonus, sk_strely, True, True):
-                    a, b, c, d = i.rect
-                    sk_explozie.add(grafika.Explozia((a-20, b-20)))
+                for objekt in pygame.sprite.groupcollide(objekt_noviny_bonus, objekt_strela, True, True):
+                    suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
+                    objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                     skore_peniaze += 25
                     skore_skore += 30
-                    zvuk.explozia_p()
+                    objekt_zvuky.explozia_p()
 
             # Priradnie všetkých aktuálnych objektov do zoznamov
-            tablet_zoznam = sk_tablet.draw(obrazovka)
-            noviny_zoznam = sk_noviny.draw(obrazovka)
-            sk_noviny_ozbrojene_zoznam = sk_noviny_ozbrojene.draw(obrazovka)
-            sk_noviny_boss_zoznam = sk_noviny_boss.draw(obrazovka)
-            sk_noviny_bonus_zoznam = sk_noviny_bonus.draw(obrazovka)     
-            sk_strely_zoznam = sk_strely.draw(obrazovka)
-            sk_strely_noviny_zoznam = sk_strely_noviny.draw(obrazovka)
-            sk_explozie_zoznam = sk_explozie.draw(obrazovka)
-            hranica_zoznam = hranica.draw(obrazovka)
-            skore_bar_zoznam = skore_bar.draw(obrazovka)
-            skore_zoznam = sk_skore.draw(obrazovka)
+            zoznam_tablet = objekt_tablet.draw(obrazovka)
+            zoznam_noviny = objekt_noviny.draw(obrazovka)
+            zoznam_noviny_ozbrojene = objekt_noviny_ozbrojene.draw(obrazovka)
+            zoznam_noviny_boss = objekt_noviny_boss.draw(obrazovka)
+            zoznam_noviny_bonus = objekt_noviny_bonus.draw(obrazovka)     
+            zoznam_strela = objekt_strela.draw(obrazovka)
+            zoznam_strela_noviny = objekt_strela_noviny.draw(obrazovka)
+            zoznam_explozia = objekt_explozia.draw(obrazovka)
+            zoznam_hranica = objekt_hranica.draw(obrazovka)
+            zoznam_skore_bar = objekt_skore_bar.draw(obrazovka)
+            zoznam_skore = objekt_skore.draw(obrazovka)
 
             # Nastavovanie bar-u a skóre pri Boss úrovni
-            if len(sk_noviny_boss_zoznam) != 0:    
-                sk_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, boss_hp, skore_peniaze, skore_skore)
-                skore_bar.update(1)
+            if len(zoznam_noviny_boss) != 0:    
+                objekt_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, noviny_boss_hp, skore_peniaze, skore_skore)
+                objekt_skore_bar.update(1)
             else:
-                sk_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore)
-                skore_bar.update(0)
+                objekt_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore)
+                objekt_skore_bar.update(0)
 
             # Streľba nepriateľov
-            if len(sk_noviny_ozbrojene_zoznam) != 0 and cas > cas_sk_strely_noviny and len(sk_strely_noviny_zoznam) < len(sk_noviny_ozbrojene_zoznam):
-                cas_sk_strely_noviny = cas + 250
-                a, b, c, d = sk_noviny_ozbrojene_zoznam[random.randrange(0, len(sk_noviny_ozbrojene_zoznam))]
-                if b > 0:
-                    sk_strely_noviny.add(strela.StrelaNoviny((a+20, b+50)))
+            if len(zoznam_noviny_ozbrojene) != 0 and cas > cas_objekt_strela_noviny and len(zoznam_strela_noviny) < len(zoznam_noviny_ozbrojene):
+                cas_objekt_strela_noviny = cas + 250
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = zoznam_noviny_ozbrojene[random.randrange(0, len(zoznam_noviny_ozbrojene))]
+                if suradnica_y > 0:
+                    objekt_strela_noviny.add(strela.StrelaNoviny((a+20, b+50)))
 
-            if len(sk_noviny_boss_zoznam) != 0 and cas > cas_sk_strely_noviny:
-                cas_sk_strely_noviny = cas + 350
-                a, b, c, d = sk_noviny_boss_zoznam[0]
-                if b > 0:
-                    e = [90, 135, 180, 225, 270]
-                    sk_strely_noviny.add(strela.StrelaNoviny((a+random.choice(e), b+150)))
+            if len(zoznam_noviny_boss) != 0 and cas > cas_objekt_strela_noviny:
+                cas_objekt_strela_noviny = cas + 350
+                suradnica_x, suradnica_y, rozmer_a, rozmer_b = zoznam_noviny_boss[0]
+                if suradnica_y > 0:
+                    pozicie_strelby = [90, 135, 180, 225, 270]
+                    objekt_strela_noviny.add(strela.StrelaNoviny((suradnica_x + random.choice(pozicie_strelby), suradnica_y + 150)))
                 
 
-            # Spustenie novej "vlny", ak na obrazovke už nie sú žiadne sk_noviny
-            if len(noviny_zoznam) == 0 and len(sk_noviny_ozbrojene_zoznam) == 0 and len(sk_noviny_boss_zoznam) == 0 and len(sk_noviny_bonus_zoznam) == 0:
+            # Spustenie novej "vlny", ak na obrazovke už nie sú žiadne objekt_noviny
+            if len(zoznam_noviny) == 0 and len(zoznam_noviny_ozbrojene) == 0 and len(zoznam_noviny_boss) == 0 and len(zoznam_noviny_bonus) == 0:
 
-                #herne pole je 5 x 4 
+                #herne pole je 5 suradnica_x 4 
                 #1,3,6 nestrielaju
                 #2,4,5,7 strielaju
 
@@ -414,38 +414,38 @@ def main():
                 # Generovanie 1. úrovne je rozdielne,
                 # pretože pred ňou nemôže byť žiadne menu obchod
                 if uroven_1:
-                    f = file("urovne/1/uroven_1_1.txt")
-                    l=f.readline()
-                    y=0
-                    while l!="":
-                      for x in xrange(len(l)):
-                          if l[x]=="1":
-                              sk_noviny.add(noviny.Noviny1(x,y))
-                          elif l[x]=="2":
-                              sk_noviny_ozbrojene.add(noviny.Noviny2(x,y))
-                          elif l[x]=="3":
-                              sk_noviny.add(noviny.Noviny3(x,y))
-                          elif l[x]=="4":
-                              sk_noviny_ozbrojene.add(noviny.Noviny4(x,y))
-                          elif l[x]=="5":
-                              sk_noviny_ozbrojene.add(noviny.Noviny5(x,y))
-                          elif l[x]=="6":
-                              sk_noviny.add(noviny.Noviny6(x,y))
-                          elif l[x]=="7":
-                              sk_noviny_ozbrojene.add(noviny.Noviny7(x,y))                          
-                          elif l[x]=="8":
-                              sk_noviny_bonus.add(n_bonus.NovinyBonus1(x,y))
-                          elif l[x]=="9":
-                              sk_noviny_boss.add(n_boss.NovinyBoss12())
+                    uroven_subor = file("urovne/1/uroven_1_1.txt")
+                    pamat = uroven_subor.readline()
+                    suradnica_y = 0
+                    while pamat != "":
+                      for suradnica_x in xrange(len(pamat)):
+                          if pamat[suradnica_x] == "1":
+                              objekt_noviny.add(noviny.Noviny1(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "2":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny2(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "3":
+                              objekt_noviny.add(noviny.Noviny3(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "4":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny4(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "5":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny5(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "6":
+                              objekt_noviny.add(noviny.Noviny6(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "7":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny7(suradnica_x, suradnica_y))                          
+                          elif pamat[suradnica_x] == "8":
+                              objekt_noviny_bonus.add(n_bonus.NovinyBonus1(suradnica_x, suradnica_y))
+                          elif pamat[suradnica_x] == "9":
+                              objekt_noviny_boss.add(n_boss.NovinyBoss12())
                               
-                      l=f.readline()
-                      y+=1
-                    f.close()
+                      pamat = uroven_subor.readline()
+                      suradnica_y += 1
+                    uroven_subor.close()
                     uroven_1 = False
                    
                 else:
                     menu_obchod.polozka_nastav(0)
-                    index_obchod = 0
+                    obchod_index = 0
                     stav = STAV_MENU_OBCHOD             
                     skore_pod_uroven += 1
 
@@ -457,44 +457,44 @@ def main():
                         skore_uroven += 1
                         skore_pod_uroven = 1
                         
-                    level_name = "urovne/" + str(skore_uroven) + "/uroven_" + str(skore_uroven) + "_" + str(skore_pod_uroven)  + ".txt"
+                    uroven_cesta = "urovne/" + str(skore_uroven) + "/uroven_" + str(skore_uroven) + "_" + str(skore_pod_uroven)  + ".txt"
                
                     try:
                         skore_peniaze += 150
                         skore_skore += 500
-                        f = file(level_name)
-                        l=f.readline()
-                        y=0
-                        while l!="":
-                          for x in xrange(len(l)):
-                              if l[x]=="1":
-                                  sk_noviny.add(noviny.Noviny1(x,y, skore_uroven))
-                              elif l[x]=="2":
-                                  sk_noviny_ozbrojene.add(noviny.Noviny2(x,y, skore_uroven))
-                              elif l[x]=="3":
-                                  sk_noviny.add(noviny.Noviny3(x,y, skore_uroven))
-                              elif l[x]=="4":
-                                  sk_noviny_ozbrojene.add(noviny.Noviny4(x,y, skore_uroven))
-                              elif l[x]=="5":
-                                  sk_noviny_ozbrojene.add(noviny.Noviny5(x,y, skore_uroven))
-                              elif l[x]=="6":
-                                  sk_noviny.add(noviny.Noviny6(x,y, skore_uroven))
-                              elif l[x]=="7":
-                                  sk_noviny_ozbrojene.add(noviny.Noviny7(x,y, skore_uroven))                          
-                              elif l[x]=="8":
-                                  sk_noviny_bonus.add(n_bonus.NovinyBonus1(x,y))
-                              elif l[x]=="9":
-                                  sk_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
-                              elif l[x]=="a":
-                                  for x in range(0,69):
-                                      sk_noviny_bonus.add(n_bonus.NovinyBonus2())
-                              elif l[x]=="b":
-                                  boss_hp = 150
-                                  sk_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
+                        uroven_subor = file(uroven_cesta)
+                        pamat = uroven_subor.readline()
+                        suradnica_y = 0
+                        while pamat!="":
+                          for suradnica_x in xrange(len(pamat)):
+                              if pamat[suradnica_x] == "1":
+                                  objekt_noviny.add(noviny.Noviny1(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "2":
+                                  objekt_noviny_ozbrojene.add(noviny.Noviny2(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "3":
+                                  objekt_noviny.add(noviny.Noviny3(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "4":
+                                  objekt_noviny_ozbrojene.add(noviny.Noviny4(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "5":
+                                  objekt_noviny_ozbrojene.add(noviny.Noviny5(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "6":
+                                  objekt_noviny.add(noviny.Noviny6(suradnica_x, suradnica_y, skore_uroven))
+                              elif pamat[suradnica_x] == "7":
+                                  objekt_noviny_ozbrojene.add(noviny.Noviny7(suradnica_x, suradnica_y, skore_uroven))                          
+                              elif pamat[suradnica_x] == "8":
+                                  objekt_noviny_bonus.add(n_bonus.NovinyBonus1(suradnica_x, suradnica_y))
+                              elif pamat[suradnica_x] == "9":
+                                  objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
+                              elif pamat[suradnica_x] == "a":
+                                  for suradnica_x in range(0,69):
+                                      objekt_noviny_bonus.add(n_bonus.NovinyBonus2())
+                              elif pamat[suradnica_x] == "b":
+                                  noviny_boss_hp = 150
+                                  objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
                                                                     
-                          l=f.readline()
-                          y+=1
-                        f.close()
+                          pamat = uroven_subor.readline()
+                          suradnica_y += 1
+                        uroven_subor.close()
                         
                     # Ak hráč prejde všetke úrovne, vyhráva
                     except IOError:
@@ -502,17 +502,17 @@ def main():
                 
             # Aktualizácia, čiže prevednie akejkoľvek zmeny na objekte
             # a vykreslenie všetkých objektov
-            pygame.display.update(tablet_zoznam)
-            pygame.display.update(noviny_zoznam)
-            pygame.display.update(sk_noviny_ozbrojene_zoznam)
-            pygame.display.update(sk_noviny_boss_zoznam)
-            pygame.display.update(sk_noviny_bonus_zoznam)
-            pygame.display.update(sk_strely_zoznam)
-            pygame.display.update(sk_strely_noviny_zoznam)
-            pygame.display.update(sk_explozie_zoznam)
-            pygame.display.update(hranica_zoznam)
-            pygame.display.update(skore_bar_zoznam)
-            pygame.display.update(skore_zoznam)
+            pygame.display.update(zoznam_tablet)
+            pygame.display.update(zoznam_noviny)
+            pygame.display.update(zoznam_noviny_ozbrojene)
+            pygame.display.update(zoznam_noviny_boss)
+            pygame.display.update(zoznam_noviny_bonus)
+            pygame.display.update(zoznam_strela)
+            pygame.display.update(zoznam_strela_noviny)
+            pygame.display.update(zoznam_explozia)
+            pygame.display.update(zoznam_hranica)
+            pygame.display.update(zoznam_skore_bar)
+            pygame.display.update(zoznam_skore)
 
             # Koniec hry, ak hráčovi dojdú životy tabletu alebo základni
             if skore_zivoty < 1 or skore_zivoty_zakladne < 1:
@@ -541,48 +541,51 @@ def main():
                 highscore.close()
                 
             # Prekreslenie obrazovky s obchod menu
-            obrazovka.blit(menu.MenuObchod.vykresli_obchod_menu(menu_obchod, index_obchod, cena, meno, extra),(0,0))
+            obrazovka.blit(menu.MenuObchod.vykresli_obchod_menu(menu_obchod, obchod_index, obchod_cena, obchod_meno, obchod_extra), (0, 0))
 
-            skore_bar_zoznam = skore_bar.draw(obrazovka)
-            skore_zoznam = sk_skore.draw(obrazovka)
-            pygame.display.update(skore_zoznam)
-            sk_strely = pygame.sprite.RenderUpdates()
-            sk_tablet = pygame.sprite.RenderUpdates()
-            sk_strely_noviny = pygame.sprite.RenderUpdates()
-            sk_explozie = pygame.sprite.RenderUpdates()
-            sk_tablet.add(tablet.Tablet())            
+            zoznam_skore_bar = objekt_skore_bar.draw(obrazovka)
+            zoznam_skore = objekt_skore.draw(obrazovka)
+            
+            pygame.display.update(zoznam_skore)
+            
+            objekt_strela = pygame.sprite.RenderUpdates()
+            objekt_tablet = pygame.sprite.RenderUpdates()
+            objekt_strela_noviny = pygame.sprite.RenderUpdates()
+            objekt_explozia = pygame.sprite.RenderUpdates()
+            
+            objekt_tablet.add(tablet.Tablet())            
 
             # Zadefinovanie rôznych položiek obchodu
-            if index_obchod == 0:
-              cena = 300
-              meno = u"Život tabletu"
-              extra = ""
+            if obchod_index == 0:
+              obchod_cena = 300
+              obchod_meno = u"Život tabletu"
+              obchod_extra = ""
               
-            elif index_obchod == 1:
-              cena = 450
-              meno = u"Rýchlejší tablet"
-              extra = u"Aktuálna úroveň: %d" % ob_tablet_rychlost_lvl
-              if ob_tablet_rychlost_lvl == 5:
-                extra = u"Aktuálna úroveň: %d" % ob_tablet_rychlost_lvl + "(MAX)"
+            elif obchod_index == 1:
+              obchod_cena = 450
+              obchod_meno = u"Rýchlejší tablet"
+              obchod_extra = u"Aktuálna úroveň: %d" % obchod_tablet_rychlost_lvl
+              if obchod_tablet_rychlost_lvl == 5:
+                obchod_extra = u"Aktuálna úroveň: %d" % obchod_tablet_rychlost_lvl + "(MAX)"
               
-            elif index_obchod == 2:
-              cena = 200
-              meno = u"Život základne"
-              extra = ""
+            elif obchod_index == 2:
+              obchod_cena = 200
+              obchod_meno = u"Život základne"
+              obchod_extra = ""
 
-            elif index_obchod == 3:
-              cena = 350
-              meno = u"Rýchlejšia Zbraň"
-              extra = u"Aktuálna úroveň: %d" % ob_strelba_rychlost_lvl
-              if ob_strelba_rychlost_lvl == 10:
-                extra = u"Aktuálna úroveň: %d" % ob_strelba_rychlost_lvl + "(MAX)"                
+            elif obchod_index == 3:
+              obchod_cena = 350
+              obchod_meno = u"Rýchlejšia Zbraň"
+              obchod_extra = u"Aktuálna úroveň: %d" % obchod_strelba_rychlost_lvl
+              if obchod_strelba_rychlost_lvl == 10:
+                obchod_extra = u"Aktuálna úroveň: %d" % obchod_strelba_rychlost_lvl + "(MAX)"                
 
-            elif index_obchod == 4:
-              cena = 950
-              meno = u"Nová Zbraň"
-              extra = u"Aktuálna úroveň: %d" % ob_strela_pocet
-              if ob_strela_pocet == 3:
-                extra = u"Aktuálna úroveň: %d" % ob_strela_pocet + "(MAX)"
+            elif obchod_index == 4:
+              obchod_cena = 950
+              obchod_meno = u"Nová Zbraň"
+              obchod_extra = u"Aktuálna úroveň: %d" % obchod_strela_pocet
+              if obchod_strela_pocet == 3:
+                obchod_extra = u"Aktuálna úroveň: %d" % obchod_strela_pocet + "(MAX)"
 
             # Interakcia v menu
             if stlacena_klavesa[K_UP]:
@@ -598,8 +601,8 @@ def main():
                 if obchod:
                     oneskorenie_sipky = cas + 200
                     menu_obchod.kurzor_obchod_lavo()
-                    if index_obchod != 0:
-                        index_obchod -= 1
+                    if obchod_index != 0:
+                        obchod_index -= 1
                 else:
                     menu_obchod.kurzor_dolava()
                 
@@ -609,38 +612,38 @@ def main():
                 if obchod:
                      oneskorenie_sipky = cas + 200
                      menu_obchod.kurzor_obchod_pravo()
-                     if index_obchod != 4:
-                         index_obchod += 1
+                     if obchod_index != 4:
+                         obchod_index += 1
                 else:
                     menu_obchod.kurzor_doprava()               
 
             # Nakupovanie rôznych položiek podľa indexov
             if stlacena_klavesa[K_RETURN] and cas > oneskorenie_enter:
                 if menu_obchod.polozka_zisti() == 0:
-                    if skore_peniaze >= cena:
-                        if index_obchod == 0:
+                    if skore_peniaze >= obchod_cena:
+                        if obchod_index == 0:
                             skore_zivoty += 1
-                            skore_peniaze -= cena
-                        elif index_obchod == 1 and ob_tablet_rychlost_lvl < 5:
-                            ob_tablet_rychlost += 0.5
-                            skore_peniaze -= cena
-                            ob_tablet_rychlost_lvl += 1
-                        elif index_obchod == 2:
+                            skore_peniaze -= obchod_cena
+                        elif obchod_index == 1 and obchod_tablet_rychlost_lvl < 5:
+                            obchod_tablet_rychlost += 0.5
+                            skore_peniaze -= obchod_cena
+                            obchod_tablet_rychlost_lvl += 1
+                        elif obchod_index == 2:
                             skore_zivoty_zakladne += 1
-                            skore_peniaze -= cena
-                        elif index_obchod == 3 and ob_strelba_rychlost_lvl < 10:
-                            ob_strelba_rychlost -= 7
-                            skore_peniaze -= cena
-                            ob_strelba_rychlost_lvl += 1
-                        elif index_obchod == 4 and ob_strela_pocet < 3:
-                            ob_strela_pocet += 1
-                            skore_peniaze -= cena
+                            skore_peniaze -= obchod_cena
+                        elif obchod_index == 3 and obchod_strelba_rychlost_lvl < 10:
+                            obchod_strelba_rychlost -= 7
+                            skore_peniaze -= obchod_cena
+                            obchod_strelba_rychlost_lvl += 1
+                        elif obchod_index == 4 and obchod_strela_pocet < 3:
+                            obchod_strela_pocet += 1
+                            skore_peniaze -= obchod_cena
                 elif menu_obchod.polozka_zisti() == 1:
                     stav = STAV_V_HRE
                     obchod_pokracuj = False
                     obrazovka.blit(pozadie, (0, 0))
                     pygame.display.update()
-                    zvuk.boj_pokrik_p()
+                    objekt_zvuky.boj_pokrik_p()
                 oneskorenie_enter = cas + 200
             if stlacena_klavesa[K_ESCAPE] and cas > oneskorenie_enter:
                 oneskorenie_enter = cas + 200
@@ -650,11 +653,11 @@ def main():
                 skore_zivoty_zakladne += 1
                 skore_zivoty += 1
                 
-            sk_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore)
+            objekt_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore)
 
         # Hlavné menu hry, spúštané pri spustení hry    
         elif stav == STAV_MENU_HLAVNE:
-            obrazovka.blit(menu.Menu.vykresli_menu(menu_hlavne),(0,0))
+            obrazovka.blit(menu.Menu.vykresli_menu(menu_hlavne),(0, 0))
             
             if stlacena_klavesa[K_UP] and cas > oneskorenie_sipky:
                 menu_hlavne.kurzor_hore()
@@ -678,27 +681,27 @@ def main():
                     skore_skore = 0
                     uroven_1 = True
 
-                    ob_tablet_rychlost = 9.0
-                    ob_tablet_rychlost_lvl = 1
-                    ob_strelba_rychlost = 300
-                    ob_strelba_rychlost_lvl = 1
-                    ob_strela_pocet = 1
+                    obchod_tablet_rychlost = 9.0
+                    obchod_tablet_rychlost_lvl = 1
+                    obchod_strelba_rychlost = 300
+                    obchod_strelba_rychlost_lvl = 1
+                    obchod_strela_pocet = 1
                     
-                    sk_noviny = pygame.sprite.RenderUpdates()
-                    sk_noviny_ozbrojene = pygame.sprite.RenderUpdates()
-                    sk_noviny_boss = pygame.sprite.RenderUpdates()
-                    sk_noviny_bonus = pygame.sprite.RenderUpdates()
-                    sk_skore = pygame.sprite.RenderUpdates()
-                    sk_skore.add(skore.Skore(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore))
-                    sk_tablet = pygame.sprite.RenderUpdates()
-                    sk_tablet.add(tablet.Tablet())
-                    sk_strely = pygame.sprite.RenderUpdates()
-                    sk_explozie = pygame.sprite.RenderUpdates()                    
-                    sk_strely_noviny = pygame.sprite.RenderUpdates()
+                    objekt_noviny = pygame.sprite.RenderUpdates()
+                    objekt_noviny_ozbrojene = pygame.sprite.RenderUpdates()
+                    objekt_noviny_boss = pygame.sprite.RenderUpdates()
+                    objekt_noviny_bonus = pygame.sprite.RenderUpdates()
+                    objekt_skore = pygame.sprite.RenderUpdates()
+                    objekt_skore.add(skore.Skore(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore))
+                    objekt_tablet = pygame.sprite.RenderUpdates()
+                    objekt_tablet.add(tablet.Tablet())
+                    objekt_strela = pygame.sprite.RenderUpdates()
+                    objekt_explozia = pygame.sprite.RenderUpdates()                    
+                    objekt_strela_noviny = pygame.sprite.RenderUpdates()
                     
                     obrazovka.blit(pozadie, (0, 0))
                     pygame.display.update()
-                    zvuk.boj_pokrik_p()                    
+                    objekt_zvuky.boj_pokrik_p()                    
                 elif menu_hlavne.polozka_zisti() == 1:
                     if obchod_pokracuj:
                         stav = STAV_MENU_OBCHOD
@@ -722,23 +725,23 @@ def main():
 
             obrazovka.blit(menu.Menu.vykresli_menu(menu_ako),(0,0))
 
-        elif stav == STAV_MENU_PAUSE:
+        elif stav == STAV_MENU_PAUZA:
 
-            obrazovka.blit(menu.Menu.vykresli_popup_menu(menu_pause, obrazovka),(0,0))
+            obrazovka.blit(menu.Menu.vykresli_popup_menu(menu_pauza, obrazovka),(0,0))
 
             if stlacena_klavesa[K_LEFT]:
-                menu_pause.kurzor_dolava()
+                menu_pauza.kurzor_dolava()
 
             if stlacena_klavesa[K_RIGHT]:
-                menu_pause.kurzor_doprava()
+                menu_pauza.kurzor_doprava()
 
             if stlacena_klavesa[K_RETURN] and cas > oneskorenie_enter:
-                if menu_pause.polozka_zisti() == 0:
+                if menu_pauza.polozka_zisti() == 0:
                     stav = STAV_V_HRE
                     obchod_pokracuj = False
                     obrazovka.blit(pozadie, (0, 0))
                     pygame.display.update()
-                elif menu_pause.polozka_zisti() == 1:
+                elif menu_pauza.polozka_zisti() == 1:
                     stav = STAV_MENU_HLAVNE
                 oneskorenie_enter = cas + 200
 
@@ -750,7 +753,7 @@ def main():
               oneskorenie_enter = cas + 250
               
         elif stav == STAV_VYHRA:
-            obrazovka.blit(menu.Menu.vykresli_koniec(menu_vyhra, obrazovka),(0,0))
+            obrazovka.blit(menu.Menu.vykresli_koniec(menu_vyhra, obrazovka),(0, 0))
             pygame.display.update()
 
             if stlacena_klavesa[K_ESCAPE]  and cas > oneskorenie_enter:
@@ -758,7 +761,7 @@ def main():
               oneskorenie_enter = cas + 200
 
         elif stav == STAV_PREHRA:            
-            obrazovka.blit(menu.Menu.vykresli_koniec(menu_prehra, obrazovka),(0,0))
+            obrazovka.blit(menu.Menu.vykresli_koniec(menu_prehra, obrazovka),(0, 0))
             pygame.display.update()
 
             if stlacena_klavesa[K_ESCAPE]  and cas > oneskorenie_enter:
