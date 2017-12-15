@@ -19,19 +19,19 @@ class Zvuky():
 
     # Jednotlive funkcie pre prehrávanie jednotlivých zvukov
     # a zadefinovnie úrovní hlasitostí
-    def strela_p(self, volume = 0.3):
+    def strela_prehraj(self, volume = 0.3):
         self.strela.play()
         self.strela.set_volume(volume)
 
-    def explozia_p(self, volume = 0.2):
+    def explozia_prehraj(self, volume = 0.2):
         self.explozia.play()
         self.explozia.set_volume(volume)
 
-    def poskodenie_p(self, volume = 0.2):
+    def poskodenie_prehraj(self, volume = 0.2):
         self.poskodenie.play()
         self.poskodenie.set_volume(volume)
 
-    def boj_pokrik_p(self, volume = 1):
+    def boj_pokrik_prehraj(self, volume = 1):
         self.boj_pokrik.play()
         self.boj_pokrik.set_volume(volume)
    

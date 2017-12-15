@@ -262,7 +262,7 @@ def main():
                     break                  
                   objekt_strela.add(strela.Strela((suradnica_x + 25 + (pocet_strel * 20), suradnica_y - 29)))
 
-                objekt_zvuky.strela_p()
+                objekt_zvuky.strela_prehraj()
 
 
             # Odstránenie všetkých objektov z obrazovky,
@@ -301,32 +301,32 @@ def main():
                 skore_peniaze += 10
                 skore_skore += 15
                 # Spustenie zvuku explózie
-                objekt_zvuky.explozia_p()
+                objekt_zvuky.explozia_prehraj()
 
             for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_noviny, False, True):
                 suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                 objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                objekt_zvuky.poskodenie_p()
+                objekt_zvuky.poskodenie_prehraj()
 
             for objekt in pygame.sprite.groupcollide(objekt_noviny_ozbrojene, objekt_strela, True, True):
                 suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                 objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_peniaze += 15
                 skore_skore += 20
-                objekt_zvuky.explozia_p()
+                objekt_zvuky.explozia_prehraj()
 
             for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_noviny_ozbrojene, False, True):
                 suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                 objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                objekt_zvuky.poskodenie_p()
+                objekt_zvuky.poskodenie_prehraj()
 
             for objekt in pygame.sprite.groupcollide(objekt_tablet, objekt_strela_noviny, False, True):
                 suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                 objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                 skore_zivoty -= 1
-                objekt_zvuky.poskodenie_p()
+                objekt_zvuky.poskodenie_prehraj()
 
 
             for objekt in pygame.sprite.groupcollide(objekt_hranica, objekt_noviny, False, True):
@@ -354,7 +354,7 @@ def main():
                     suradnica_x, suradnica_y, rozmer_a, rozmer_b = objekt.rect
                     objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                     skore_peniaze += 10
-                    objekt_zvuky.explozia_p()
+                    objekt_zvuky.explozia_prehraj()
                     
             if skore_uroven == 3 and skore_pod_uroven == 6:
                 for objekt in pygame.sprite.groupcollide(objekt_noviny_bonus, objekt_strela, True, True):
@@ -362,7 +362,7 @@ def main():
                     objekt_explozia.add(grafika.Explozia((suradnica_x - 20, suradnica_y - 20)))
                     skore_peniaze += 25
                     skore_skore += 30
-                    objekt_zvuky.explozia_p()
+                    objekt_zvuky.explozia_prehraj()
 
             # Priradnie všetkých aktuálnych objektov do zoznamov
             zoznam_tablet = objekt_tablet.draw(obrazovka)
@@ -390,7 +390,7 @@ def main():
                 cas_objekt_strela_noviny = cas + 250
                 suradnica_x, suradnica_y, rozmer_a, rozmer_b = zoznam_noviny_ozbrojene[random.randrange(0, len(zoznam_noviny_ozbrojene))]
                 if suradnica_y > 0:
-                    objekt_strela_noviny.add(strela.StrelaNoviny((a+20, b+50)))
+                    objekt_strela_noviny.add(strela.StrelaNoviny((suradnica_x + 20, suradnica_y + 50)))
 
             if len(zoznam_noviny_boss) != 0 and cas > cas_objekt_strela_noviny:
                 cas_objekt_strela_noviny = cas + 350
@@ -517,7 +517,7 @@ def main():
             # Koniec hry, ak hráčovi dojdú životy tabletu alebo základni
             if skore_zivoty < 1 or skore_zivoty_zakladne < 1:
               stav = STAV_PREHRA
-              zvuky.Zvuky().explozia_p(1)
+              zvuky.Zvuky().explozia_prehraj(1)
                 
             # Zadefinovanie počtu snímkov za sekundu (FPS)
             hodiny.tick(60)
@@ -643,7 +643,7 @@ def main():
                     obchod_pokracuj = False
                     obrazovka.blit(pozadie, (0, 0))
                     pygame.display.update()
-                    objekt_zvuky.boj_pokrik_p()
+                    objekt_zvuky.boj_pokrik_prehraj()
                 oneskorenie_enter = cas + 200
             if stlacena_klavesa[K_ESCAPE] and cas > oneskorenie_enter:
                 oneskorenie_enter = cas + 200
@@ -701,7 +701,7 @@ def main():
                     
                     obrazovka.blit(pozadie, (0, 0))
                     pygame.display.update()
-                    objekt_zvuky.boj_pokrik_p()                    
+                    objekt_zvuky.boj_pokrik_prehraj()                    
                 elif menu_hlavne.polozka_zisti() == 1:
                     if obchod_pokracuj:
                         stav = STAV_MENU_OBCHOD

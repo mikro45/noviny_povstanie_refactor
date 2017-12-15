@@ -8,7 +8,7 @@ from pygame.locals import *
 
 class Noviny1(pygame.sprite.Sprite):
     """Vykresľuje základného nepriateľa - noviny"""    
-    def __init__(self, x, y, uroven = 1):
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         pygame.sprite.Sprite.__init__(self)        
         # Výber vhodného obrázku na základe úrovne    
         if uroven == 1:
@@ -22,11 +22,11 @@ class Noviny1(pygame.sprite.Sprite):
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
 
-        # Určenie počiatočných súradníc novín na základne vstupných parametrov x a y
+        # Určenie počiatočných súradníc novín na základne vstupných parametrov suradnica_x a suradnica_y
         # Noviny sú umiestnené mimo obrazovku a posupne sa posúvajú smerom na obrazvoku ku hráčovi
-        self.x = (x * 210) + 55
-        self.y = -(y * 210) - self.rect.height * 2
-        self.rect.topleft = [self.x, self.y]
+        self.suradnica_x = (suradnica_x * 210) + 55
+        self.suradnica_y = -(suradnica_y * 210) - self.rect.height * 2
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         
         # Určenie rýchlosti pohybu novín po obrazovke
         # Prvé číslo je smer horizontálny a druhý je vertikálny
@@ -46,7 +46,7 @@ class Noviny1(pygame.sprite.Sprite):
 
 class Noviny2(Noviny1):
     """Trieda Noviny2 dedí z Noviny1 a preberá jej metódy a vlastnosti."""
-    def __init__(self, x, y, uroven = 1):
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         """Vďaka tomu, že trieda dedí z nadradenej triedy,
             nie je potreba písať všetky hodnoty,
             ale iba tie, ktoré sú potrebné"""
@@ -54,21 +54,21 @@ class Noviny2(Noviny1):
         # je to riešené v hlavnej funkcii.
         # Hlavný dôvod novej triedy, je nový obrázok,
         # no do budúcna sa môžu jej vlastnosti ľubovoľne upravovať.
-        Noviny1.__init__(self, x, y)
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         if uroven == 1:
             self.image = pygame.image.load('obrazky/noviny/uroven_1/noviny_2.bmp').convert()
         elif uroven == 2:
             self.image = pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert()
         else:
             self.image = pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert()
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [2, 3]
 
 
 class Noviny3(Noviny1):
     """Trieda Noviny3 dedí z Noviny1"""
-    def __init__(self, x, y, uroven = 1):
-        Noviny1.__init__(self, x, y)
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         # Trieda načítavá 2 obrázky do poľa, aby animácia bola možná.       
         self.obrazok_pole = []
         if uroven == 1:
@@ -80,7 +80,7 @@ class Noviny3(Noviny1):
         else:
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [4, 3]
         # Náhodné číslo, ktoré určuje, akú veľkú dráhu objekt vykoná do strán
         self.draha = random.randrange(30, 51)
@@ -94,7 +94,7 @@ class Noviny3(Noviny1):
         """Funkcia riadi pohyb smerom dole, ale aj do strán"""
         if self.cas_pohybu < casovac:
             self.cas_pohybu = casovac
-            if self.rect.left < self.x - self.draha or self.rect.left > self.x + self.draha:
+            if self.rect.left < self.suradnica_x - self.draha or self.rect.left > self.suradnica_x + self.draha:
                 self.smer[0] = -self.smer[0]
                 
             self.rect.left = self.rect.left + self.smer[0]
@@ -112,10 +112,10 @@ class Noviny3(Noviny1):
 
 class Noviny4(Noviny1):
     """Trieda Noviny4 dedí z Noviny1"""
-    def __init__(self, x, y, uroven = 1):
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         """Trieda je veľmi podobná s triedou Noviny3,
             pohyb je jemne upravený a obrázky zmenené"""
-        Noviny1.__init__(self, x, y)
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         self.obrazok_pole = []
         if uroven == 1:
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_4.bmp').convert())
@@ -127,7 +127,7 @@ class Noviny4(Noviny1):
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
         
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [2, 3]
         self.draha = 50
                 
@@ -137,7 +137,7 @@ class Noviny4(Noviny1):
     def update(self, casovac):
       if self.cas_pohybu < casovac:
             self.cas_pohybu = casovac
-            if self.rect.left < self.x - self.draha or self.rect.left > self.x + self.draha:
+            if self.rect.left < self.suradnica_x - self.draha or self.rect.left > self.suradnica_x + self.draha:
                 self.smer[0] = -self.smer[0]
                 
             self.rect.left = self.rect.left + self.smer[0]
@@ -155,9 +155,9 @@ class Noviny4(Noviny1):
 
 class Noviny5(Noviny1):
     """Trieda Noviny5 dedí z Noviny1"""
-    def __init__(self, x, y, uroven = 1):
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         """Táto trieda má na možnosť z 2 obrázkov, ktoré náhodne vyberie pri spustení"""
-        Noviny1.__init__(self, x, y)
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         self.obrazok_pole = []
         if uroven == 1:
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_5.bmp').convert())
@@ -170,7 +170,7 @@ class Noviny5(Noviny1):
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
         self.image = self.obrazok_pole[random.randrange(0, 2)]
         
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [3, 4]
         self.draha = 50
         self.stop = False
@@ -195,16 +195,16 @@ class Noviny5(Noviny1):
 
         if self.stop and self.stop_casovac < casovac:
           self.stop_casovac = casovac
-          if self.rect.left > self.x - self.draha and self.rect.top < 100:
+          if self.rect.left > self.suradnica_x - self.draha and self.rect.top < 100:
               self.rect.left = self.rect.left - self.smer[0]
-          if self.rect.left < self.x + self.draha and self.rect.top > 100:
+          if self.rect.left < self.suradnica_x + self.draha and self.rect.top > 100:
               self.rect.left = self.rect.left + self.smer[0]          
           self.stop_casovac += 5
 
 class Noviny6(Noviny1):
     """Trieda Noviny6 dedí z Noviny1"""
-    def __init__(self, x, y, uroven = 1):
-        Noviny1.__init__(self, x, y)
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         self.obrazok_pole = []
         if uroven == 1:
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_6.bmp').convert())
@@ -217,7 +217,7 @@ class Noviny6(Noviny1):
             self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
         self.image = self.obrazok_pole[random.randrange(0, 2)]
         
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [3, 4]
         self.draha = 50
         self.stop = False
@@ -244,13 +244,13 @@ class Noviny6(Noviny1):
       
         if self.stop:
           self.rect.left = self.rect.left + self.smer[0]
-          if (self.rect.left < self.x - self.draha or self.rect.left > self.x + self.draha):
+          if (self.rect.left < self.suradnica_x - self.draha or self.rect.left > self.suradnica_x + self.draha):
               self.smer[0] = -self.smer[0]
 
 class Noviny7(Noviny1):
     """Trieda Noviny7 dedí z Noviny1"""
-    def __init__(self, x, y, uroven = 1):
-        Noviny1.__init__(self, x, y)
+    def __init__(self, suradnica_x, suradnica_y, uroven = 1):
+        Noviny1.__init__(self, suradnica_x, suradnica_y)
         self.obrazok = pygame.image.load('obrazky/noviny/uroven_1/noviny_7.bmp').convert()
         self.obrazok_pole = []
         # Animácia skladajúca sa s 5 snímkov
@@ -265,7 +265,7 @@ class Noviny7(Noviny1):
         else:
             for i in range(1, 6):
                 self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-        self.rect.topleft = [self.x, self.y]
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [4, 3]
         self.draha = 20
 
@@ -280,7 +280,7 @@ class Noviny7(Noviny1):
     def update(self, casovac):
       if self.cas_pohybu < casovac:
             self.cas_pohybu = casovac
-            if self.rect.left < self.x - self.draha or self.rect.left > self.x + self.draha:
+            if self.rect.left < self.suradnica_x - self.draha or self.rect.left > self.suradnica_x + self.draha:
                     self.smer[0] = -self.smer[0]
                     # Pri každej otočke nepriateľ urobí menší skok smerom dole o 1O px
                     self.rect.top = self.rect.top + 10

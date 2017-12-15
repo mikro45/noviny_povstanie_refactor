@@ -77,30 +77,30 @@ class Menu():
         menu = pygame.Surface((kon.VELKOST_OKNA_X, kon.VELKOST_OKNA_Y))
         menu.blit(self.pozadie, (0, 0))
                 
-        i = 0
+        polozka_pocet = 0
         # Vykreslenie vsetkch poloziek
-        while i < len(self.polozky):
-          x = kon.VELKOST_OKNA_X / 11 
-          y = kon.VELKOST_OKNA_Y / 11 * i + kon.VELKOST_OKNA_Y / 10
-          text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)
-          pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-          menu.blit(text, (x, y))
+        while polozka_pocet < len(self.polozky):
+          suradnica_x = kon.VELKOST_OKNA_X / 11 
+          suradnica_y = kon.VELKOST_OKNA_Y / 11 * polozka_pocet + kon.VELKOST_OKNA_Y / 10
+          text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
+          pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+          menu.blit(text, (suradnica_x, suradnica_y))
           # Vykreslenie vybratej - aktivnej polozky
-          if i == self.vybrata_polozka:
-            pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-            menu.blit(text, (x, y))
+          if polozka_pocet == self.vybrata_polozka:
+            pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            menu.blit(text, (suradnica_x, suradnica_y))
 
-          i += 1
+          polozka_pocet += 1
 
-        i = 0
+        polozka_pocet = 0
 
         # Vykreslenie všetkých riadkov - textu
-        while i < len(self.riadky):
-          x = kon.VELKOST_OKNA_X / 11 
-          y = kon.VELKOST_OKNA_Y / 16 * i + kon.VELKOST_OKNA_Y / 5          
-          text = self.font_riadky.render(self.riadky[i], 1, self.farba_cierna)
-          menu.blit(text,(x, y))
-          i += 1
+        while polozka_pocet < len(self.riadky):
+          suradnica_x = kon.VELKOST_OKNA_X / 11 
+          suradnica_y = kon.VELKOST_OKNA_Y / 16 * polozka_pocet + kon.VELKOST_OKNA_Y / 5          
+          text = self.font_riadky.render(self.riadky[polozka_pocet], 1, self.farba_cierna)
+          menu.blit(text,(suradnica_x, suradnica_y))
+          polozka_pocet += 1
 
         menu.blit(self.font_noviny_povstanie.render("Noviny - Povstanie", 1, self.farba_biela),(400, 50))
         pygame.display.update()
@@ -108,41 +108,41 @@ class Menu():
     
     # Vykreslí menu, ktoré prekryje aktuálnu obrazovku s menu bez pozadia
     def vykresli_popup_menu(self, obrazovka):
-        i = 0
+        polozka_pocet = 0
 
-        while i < len(self.polozky):
-          x = kon.VELKOST_OKNA_X / 3.5 * i + kon.VELKOST_OKNA_X / 3.5
-          y = kon.VELKOST_OKNA_Y / 2
+        while polozka_pocet < len(self.polozky):
+          suradnica_x = kon.VELKOST_OKNA_X / 3.5 * polozka_pocet + kon.VELKOST_OKNA_X / 3.5
+          suradnica_y = kon.VELKOST_OKNA_Y / 2
 
-          text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)
-          rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_neaktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-          obrazovka.blit(text, (x, y)) 
+          text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
+          rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+          obrazovka.blit(text, (suradnica_x, suradnica_y)) 
 
-          if i == self.vybrata_polozka:
-            rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_aktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-            obrazovka.blit(text, (x, y))  
+          if polozka_pocet == self.vybrata_polozka:
+            rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            obrazovka.blit(text, (suradnica_x, suradnica_y))  
 
-          i += 1      
+          polozka_pocet += 1      
 
         pygame.display.update()
         return obrazovka
 
     # Vykreslí koniec hry - text
     def vykresli_koniec(self, obrazovka):
-        i = 0
+        polozka_pocet = 0
 
-        while i < len(self.riadky):
-          x = kon.VELKOST_OKNA_X / 5
-          y = kon.VELKOST_OKNA_Y / 5 * i + 100
-          text = self.font_velky.render(self.riadky[i], 1, self.farba_cierna)
-          if i > 0:
-            text = self.font_stredny.render(self.riadky[i], 1, self.farba_biela)
+        while polozka_pocet < len(self.riadky):
+          suradnica_x = kon.VELKOST_OKNA_X / 5
+          suradnica_y = kon.VELKOST_OKNA_Y / 5 * polozka_pocet + 100
+          text = self.font_velky.render(self.riadky[polozka_pocet], 1, self.farba_cierna)
+          if polozka_pocet > 0:
+            text = self.font_stredny.render(self.riadky[polozka_pocet], 1, self.farba_biela)
           rect = text.get_rect()
           rect.centerx = kon.VELKOST_OKNA_X / 2
-          rect.y = y
+          rect.suradnica_y = suradnica_y
           obrazovka.blit(text, rect)
          
-          i += 1
+          polozka_pocet += 1
           
         pygame.display.update()
         return obrazovka
@@ -175,7 +175,7 @@ class MenuObchod(Menu):
         self.ob_zbran_nova = pygame.image.load('obrazky/obchod_veci/ob_zbran_nova.bmp').convert()
         self.ob_zbran_nova.set_colorkey((255, 0, 255))
 
-        # Boolean pre určenie či hráč bude pohybovať v náhľade alebo medzi tlačidlami
+        # Boolean pre určenie čpolozka_pocet hráč bude pohybovať v náhľade alebo medzi tlačidlami
         self.obchod = False
 
     # Metódy pre pohyb v obchode
@@ -198,7 +198,7 @@ class MenuObchod(Menu):
         menu = pygame.Surface((kon.VELKOST_OKNA_X, kon.VELKOST_OKNA_Y))
         menu.blit(self.pozadie, (0, 0))
 
-        i = 0
+        polozka_pocet = 0
 
         # Zadefinovanie rozmerov a suradnic vsetkych objektov v obchode
         # pre pripadne buduce zmene a pre ropoznanie
@@ -212,48 +212,48 @@ class MenuObchod(Menu):
 
         ramcek_1_obrazok = [ramcek_1[0] + 3, ramcek_1[1] + 3]
 
-        text_nadpisu = [418, 35]
-        text_popisu = [195, 410]
+        text_nadpis = [418, 35]
+        text_popis = [195, 410]
 
         # Zadefinovanie pouzitych farieb
-        farba_ramceka = (0, 64, 64)
-        farba_ramceka_vnutri = (255, 255, 224)
-        farba_ramceka_aktivna = (0, 192, 0)
-        farba_popisu = (0, 192, 255)
-        farba_nadpisu = (0, 128, 255)
+        farba_ramcek = (0, 64, 64)
+        farba_ramcek_vnutri = (255, 255, 224)
+        farba_ramcek_aktivna = (0, 192, 0)
+        farba_popis = (0, 192, 255)
+        farba_nadpis = (0, 128, 255)
                
 
         
-        while i < len(self.polozky):
-            x = kon.VELKOST_OKNA_X / 3.3 * i + kon.VELKOST_OKNA_X / 4
-            y = 670
+        while polozka_pocet < len(self.polozky):
+            suradnica_x = kon.VELKOST_OKNA_X / 3.3 * polozka_pocet + kon.VELKOST_OKNA_X / 4
+            suradnica_y = 670
 
-            text = self.font_polozky.render(self.polozky[i], 1, self.farba_biela)
-            rect = pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-            menu.blit(text, (x, y))        
+            text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
+            rect = pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            menu.blit(text, (suradnica_x, suradnica_y))        
 
-            if i == self.vybrata_polozka:
-                rect = pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (x - 10, y, self.tlacidlo_sirka, self.tlacidlo_vyska))
-                menu.blit(text, (x, y))          
+            if polozka_pocet == self.vybrata_polozka:
+                rect = pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+                menu.blit(text, (suradnica_x, suradnica_y))          
 
-            i += 1
+            polozka_pocet += 1
         
         # Vykreslenie ramcekov
-        rect = pygame.draw.rect(menu, farba_ramceka, (ramcek_1[0], ramcek_1[1], ramcek_1[2], ramcek_1[2]), ramcek_12_hrubka)
-        rect = pygame.draw.rect(menu, farba_ramceka_vnutri, (ramcek_1[0] + 3, ramcek_1[1] + 3, ramcek_1[2] - 5, ramcek_1[2] -5))        
+        rect = pygame.draw.rect(menu, farba_ramcek, (ramcek_1[0], ramcek_1[1], ramcek_1[2], ramcek_1[2]), ramcek_12_hrubka)
+        rect = pygame.draw.rect(menu, farba_ramcek_vnutri, (ramcek_1[0] + 3, ramcek_1[1] + 3, ramcek_1[2] - 5, ramcek_1[2] -5))        
             
-        rect = pygame.draw.rect(menu, farba_ramceka, (ramcek_2[0], ramcek_2[1], ramcek_2[2], ramcek_2[3]), ramcek_12_hrubka)
-        rect = pygame.draw.rect(menu, farba_ramceka_vnutri, (ramcek_2[0] + 3, ramcek_2[1] + 3, ramcek_2[2] - 5, ramcek_2[3] - 5))
+        rect = pygame.draw.rect(menu, farba_ramcek, (ramcek_2[0], ramcek_2[1], ramcek_2[2], ramcek_2[3]), ramcek_12_hrubka)
+        rect = pygame.draw.rect(menu, farba_ramcek_vnutri, (ramcek_2[0] + 3, ramcek_2[1] + 3, ramcek_2[2] - 5, ramcek_2[3] - 5))
 
-        rect = pygame.draw.rect(menu, farba_ramceka, (ramcek_3[0], ramcek_3[1], ramcek_3[2], ramcek_3[3]), ramcek_12_hrubka)
-        rect = pygame.draw.rect(menu, farba_ramceka_vnutri, (ramcek_3[0] + 3, ramcek_3[1] + 3, ramcek_3[2] - 5, ramcek_3[3] - 5))
+        rect = pygame.draw.rect(menu, farba_ramcek, (ramcek_3[0], ramcek_3[1], ramcek_3[2], ramcek_3[3]), ramcek_12_hrubka)
+        rect = pygame.draw.rect(menu, farba_ramcek_vnutri, (ramcek_3[0] + 3, ramcek_3[1] + 3, ramcek_3[2] - 5, ramcek_3[3] - 5))
 
         menu.blit(self.sipka_l0, (sipka_1[0], sipka_1[1]))
         menu.blit(self.sipka_p0, (sipka_2[0], sipka_2[1]))               
         
 
         if self.obchod:
-            rect = pygame.draw.rect(menu, farba_ramceka_aktivna, (ramcek_1[0], ramcek_1[1], ramcek_1[2], ramcek_1[2]), ramcek_12_hrubka)
+            rect = pygame.draw.rect(menu, farba_ramcek_aktivna, (ramcek_1[0], ramcek_1[1], ramcek_1[2], ramcek_1[2]), ramcek_12_hrubka)
             if self.vybrata_polozka == 101:
                 menu.blit(self.sipka_l, (sipka_1[0], sipka_1[1]))
             if self.vybrata_polozka == 102:
@@ -271,12 +271,12 @@ class MenuObchod(Menu):
         elif index == 4:
             menu.blit(self.ob_zbran_nova, (ramcek_1_obrazok[0], ramcek_1_obrazok[1]))
 
-        menu.blit(self.font_stredny.render(u"Obchod", 1, farba_nadpisu), (text_nadpisu[0], text_nadpisu[1]))
+        menu.blit(self.font_stredny.render(u"Obchod", 1, farba_nadpis), (text_nadpis[0], text_nadpis[1]))
         
         # Vykresľovanie popisu pre rôzne položky obchodu      
-        menu.blit(self.font_stredny.render(meno, 1, farba_popisu), (text_popisu[0], text_popisu[1]))
-        menu.blit(self.font_stredny.render("CENA = %d" % cena, 1, farba_popisu), (text_popisu[0], text_popisu[1] + 72))
-        menu.blit(self.font_stredny.render(u"%s" % extra, 1, farba_popisu), (text_popisu[0], text_popisu[1] + 72 * 2))
+        menu.blit(self.font_stredny.render(meno, 1, farba_popis), (text_popis[0], text_popis[1]))
+        menu.blit(self.font_stredny.render("CENA = %d" % cena, 1, farba_popis), (text_popis[0], text_popis[1] + 72))
+        menu.blit(self.font_stredny.render(u"%s" % extra, 1, farba_popis), (text_popis[0], text_popis[1] + 72 * 2))
 
         pygame.display.update()  
         return menu

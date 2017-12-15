@@ -15,8 +15,8 @@ class Explozia(pygame.sprite.Sprite):
         self.obrazky_pole = []
         self.obrazky = pygame.image.load('obrazky/explozia.bmp').convert()
         self.obrazky.set_colorkey((255, 0, 255))
-        for i in range(0, 240, 60):
-            self.obrazky_pole.append(self.obrazky.subsurface((i, 0, 60, 60)))
+        for snimok_cislo in range(0, 240, 60):
+            self.obrazky_pole.append(self.obrazky.subsurface((snimok_cislo, 0, 60, 60)))
         self.image = self.obrazky_pole[0]
         self.rect = self.obrazky_pole[0].get_rect()
         self.cas_animacie = 0

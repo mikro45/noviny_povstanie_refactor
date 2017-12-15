@@ -10,24 +10,24 @@ import konstanty as kon
 
 class NovinyBonus1(pygame.sprite.Sprite):
     """Vykresľuje prvý bonusový level"""
-    def __init__(self, x, y):
+    def __init__(self, suradnica_x, suradnica_y):
         """Pointa bonusového levelu, je pre hráča chytiť čo najviac novín,
             s tým, že má nekonečný počet životov"""
         pygame.sprite.Sprite.__init__(self)
 
         # Načítanie všetkých obrázkov z 1. úrovne
         self.obrazok_pole = []
-        for i in range(1, 7):
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s.bmp' % str(i)).convert())
-        for i in range(3, 7):
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s_5.bmp' % str(i)).convert())
+        for obrazok_cislo in range(1, 7):
+            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s.bmp' % str(obrazok_cislo)).convert())
+        for obrazok_cislo in range(3, 7):
+            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s_5.bmp' % str(obrazok_cislo)).convert())
         self.image = self.obrazok_pole[random.randrange(0,9)]
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
 
-        self.x = (x * 150) + 25
-        self.y = -(y * 150) - self.rect.height * 2
-        self.rect.topleft = [self.x, self.y]
+        self.suradnica_x = (suradnica_x * 150) + 25
+        self.suradnica_y = -(suradnica_y * 150) - self.rect.height * 2
+        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         
         self.smer = [2, 8]
         self.cas_pohybu = 0
