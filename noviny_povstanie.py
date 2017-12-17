@@ -168,14 +168,6 @@ def main():
     objekt_hranica = pygame.sprite.RenderUpdates()
     objekt_hranica.add(grafika.Hranica())
 
-    objekt_skore_bar = pygame.sprite.RenderUpdates()
-    objekt_skore_bar.add(skore.SkoreBar())
-
-    
-    objekt_skore1 = pygame.sprite.RenderUpdates()
-    objekt_skore1.add(skore.Skore1(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore))
-
-    
     # Načítanie triedy Zvuky
     objekt_zvuky = zvuky.Zvuky()
 
@@ -282,9 +274,7 @@ def main():
             objekt_strela_noviny.clear(obrazovka, pozadie)
             objekt_explozia.clear(obrazovka, pozadie)
             objekt_hranica.clear(obrazovka, pozadie)
-            #objekt_skore_bar.clear(obrazovka, pozadie)
             objekt_skore.clear(obrazovka, pozadie)
-            #objekt_skore1.clear(obrazovka, pozadie)
 
             # Aktualizácia všetkých objektov - zavolanie metód update v triedach
             objekt_tablet.update(smer, obchod_tablet_rychlost)
@@ -295,8 +285,6 @@ def main():
             objekt_strela.update()
             objekt_strela_noviny.update()
             objekt_explozia.update(cas)
-            #objekt_skore1.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore)
-           
 
             # Detekcia kolízie objektov
             for objekt in pygame.sprite.groupcollide(objekt_noviny, objekt_strela, True, True):
@@ -380,18 +368,13 @@ def main():
             zoznam_strela_noviny = objekt_strela_noviny.draw(obrazovka)
             zoznam_explozia = objekt_explozia.draw(obrazovka)
             zoznam_hranica = objekt_hranica.draw(obrazovka)
-            #zoznam_skore_bar = objekt_skore_bar.draw(obrazovka)
             zoznam_skore = objekt_skore.draw(obrazovka)
 
-            #zoznam_skore1 = objekt_skore1.draw(obrazovka)
-            
             # Nastavovanie bar-u a skóre pri Boss úrovni
             if len(zoznam_noviny_boss) != 0:    
                 objekt_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, noviny_boss_hp, skore_peniaze, skore_skore, False)
-                #objekt_skore_bar.update(1)
             else:
                 objekt_skore.update(skore_zivoty, skore_uroven, skore_pod_uroven, skore_zivoty_zakladne, skore_peniaze, skore_skore, True)
-                #objekt_skore_bar.update(0)
 
             # Streľba nepriateľov
             if len(zoznam_noviny_ozbrojene) != 0 and cas > cas_objekt_strela_noviny and len(zoznam_strela_noviny) < len(zoznam_noviny_ozbrojene):
@@ -519,9 +502,7 @@ def main():
             pygame.display.update(zoznam_strela_noviny)
             pygame.display.update(zoznam_explozia)
             pygame.display.update(zoznam_hranica)
-            #pygame.display.update(zoznam_skore_bar)
             pygame.display.update(zoznam_skore)
-            #pygame.display.update(zoznam_skore1)
 
             # Koniec hry, ak hráčovi dojdú životy tabletu alebo základni
             if skore_zivoty < 1 or skore_zivoty_zakladne < 1:
@@ -552,7 +533,6 @@ def main():
             # Prekreslenie obrazovky s obchod menu
             obrazovka.blit(menu.MenuObchod.vykresli_obchod_menu(menu_obchod, obchod_index, obchod_cena, obchod_meno, obchod_extra), (0, 0))
 
-            zoznam_skore_bar = objekt_skore_bar.draw(obrazovka)
             zoznam_skore = objekt_skore.draw(obrazovka)
             
             pygame.display.update(zoznam_skore)
