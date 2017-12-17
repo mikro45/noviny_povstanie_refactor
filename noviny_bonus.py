@@ -14,20 +14,22 @@ class NovinyBonus1(pygame.sprite.Sprite):
         """Pointa bonusového levelu, je pre hráča chytiť čo najviac novín,
             s tým, že má nekonečný počet životov"""
         pygame.sprite.Sprite.__init__(self)
-        self.uroven = 1
+        self.UROVEN = 1
+        self.NOVINY_OFSET_1 = 150
+        self.NOVINY_OFSET_2 = 25
         # Načítanie všetkých obrázkov z 1. úrovne
         self.obrazok_pole = []
         for obrazok_cislo in range(1, 7):
-            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, obrazok_cislo)).convert())
+            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.UROVEN, obrazok_cislo)).convert())
         for obrazok_cislo in range(3, 7):
             # "+ '_5'" pretože existuju aj subory s takym nazvom
-            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, str(obrazok_cislo) + '_5')).convert())
+            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.UROVEN, str(obrazok_cislo) + '_5')).convert())
         self.image = self.obrazok_pole[random.randrange(0,9)]
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
 
-        self.suradnica_x = (suradnica_x * 150) + 25
-        self.suradnica_y = -(suradnica_y * 150) - self.rect.height * 2
+        self.suradnica_x = (suradnica_x * self.NOVINY_OFSET_1) + self.NOVINY_OFSET_2
+        self.suradnica_y = -(suradnica_y * self.NOVINY_OFSET_1) - self.rect.height * 2
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         
         self.smer = [2, 8]
@@ -37,17 +39,19 @@ class NovinyBonus1(pygame.sprite.Sprite):
         if self.cas_pohybu < casovac:
             self.cas_pohybu = casovac
             self.rect.top = self.rect.top + self.smer[1]
-            self.cas_pohybu += 20
+            self.cas_pohybu += kon.NOVINY_DLZKA_POHYBU
 
 class NovinyBonus2(pygame.sprite.Sprite):
-    """Vykresľuje prvý bonusový level"""
+    """Vykresľuje druhý bonusový level
+        NovinyBonus2 nededia z NovinyBonus1, pretože chovanie NovinyBonus2,
+        je veľmi rozdielné"""
     def __init__(self):
         """Pointa bonusového levelu, je pre hráča chytiť čo najviac novín,
             s tým, že má nekonečný počet životov"""
         pygame.sprite.Sprite.__init__(self)
-        self.uroven = 2;
+        self.UROVEN = 2
         # Načítanie náhodného obrázku z 2. úrovne
-        self.image = pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, random.randrange(1,27))).convert()
+        self.image = pygame.image.load(kon.NOVINY_CESTA.format(self.UROVEN, random.randrange(1,27))).convert()
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
 
@@ -67,4 +71,4 @@ class NovinyBonus2(pygame.sprite.Sprite):
             self.rect.left = self.rect.left + self.smer[0]
             self.rect.top = self.rect.top + self.smer[1]
 
-            self.cas_pohybu += 20
+            self.cas_pohybu += kon.NOVINY_DLZKA_POHYBU

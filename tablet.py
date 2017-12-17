@@ -19,7 +19,9 @@ class Tablet(pygame.sprite.Sprite):
 
     def update(self, smer, rychlost):
         """Umožnuje pohyb hráča po obrazovke na základe vstupu."""
+        # Pohyb doľava
         if smer == 0 and self.rect.left > 0:
             self.rect.left -= rychlost
+        # Pohyb doprava
         elif smer == 1 and self.rect.left < kon.VELKOST_OKNA_X - self.rect.width:
             self.rect.left += rychlost

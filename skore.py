@@ -57,10 +57,10 @@ class Skore(pygame.sprite.Sprite):
             
         # Ak je hráč v 6. pod-úrovni - bonusovej pod-úrovni, tak sa nepíše 6. pod-úroveň ale x. bonus
         if pod_uroven == self.uroven_bonus:
-            self.text_pole[1] = self.font.render(('{}. BONUS'.format(self.uroven)), True, self.farba)
+            self.text_pole[1] = self.font.render(('ÚROVEŇ: {}. BONUS'.format(self.uroven)), True, self.farba)
         # Ak je hráč v 7. pod-úrovni - Boss pod-úrovni, tak sa nepíše 7. pod-úroveň ale x. Boss    
         if pod_uroven == self.uroven_boss:
-            self.text_pole[1] = self.font.render(('{}. BOSS'.format(self.uroven)), True, self.farba)
+            self.text_pole[1] = self.font.render(('ÚROVEŇ: {}. BOSS'.format(self.uroven)), True, self.farba)
 
         # Vykreslenie transparentého pozadia pod pozadie pre lepší anti-aliasing textu - vyhladzovanie hrán textu
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)

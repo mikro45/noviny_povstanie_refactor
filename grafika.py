@@ -12,6 +12,7 @@ class Explozia(pygame.sprite.Sprite):
     def __init__(self, pozicia):
         pygame.sprite.Sprite.__init__(self)
         # Animácia výbuchu skladajúca sa zo 4 snímkoch
+        self.DLZKA_ANIMACIE = 50
         self.obrazky_pole = []
         self.obrazky = pygame.image.load('obrazky/explozia.bmp').convert()
         self.obrazky.set_colorkey((255, 0, 255))
@@ -33,7 +34,7 @@ class Explozia(pygame.sprite.Sprite):
             # Keď animácia skončí, objekt sa odstráni
             if self.pocitadlo_animacie > 3:
                 self.kill()
-            self.cas_animacie += 50
+            self.cas_animacie += self.DLZKA_ANIMACIE
 
 class Hranica(pygame.sprite.Sprite):
     """Neviditeľná hranica, ktorá je vykresľovaná mimo obrazovky pre detekciu,
@@ -41,6 +42,7 @@ class Hranica(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.HRANICA_OFSET = 89
         self.image = pygame.image.load('obrazky/ui/hranica.bmp').convert()
         self.rect = self.image.get_rect()
-        self.rect.topleft = [0, kon.VELKOST_OKNA_Y + 89]
+        self.rect.topleft = [0, kon.VELKOST_OKNA_Y + self.HRANICA_OFSET]

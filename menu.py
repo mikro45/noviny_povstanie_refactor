@@ -18,8 +18,8 @@ class Menu():
         self.riadky = []
 
         # Zadefinovanie veľkosti tlačidiel
-        self.tlacidlo_sirka = 220
-        self.tlacidlo_vyska = 36
+        self.TLACIDLO_SIRKA = 220
+        self.TLACIDLO_VYSKA = 36
 
         # Zadefinovanie rôznych druhov fontov
         self.font_polozky = pygame.font.SysFont("comicsansms", 24)
@@ -83,11 +83,11 @@ class Menu():
           suradnica_x = kon.VELKOST_OKNA_X / 11 
           suradnica_y = kon.VELKOST_OKNA_Y / 11 * polozka_pocet + kon.VELKOST_OKNA_Y / 10
           text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
-          pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+          pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
           menu.blit(text, (suradnica_x, suradnica_y))
           # Vykreslenie vybratej - aktivnej polozky
           if polozka_pocet == self.vybrata_polozka:
-            pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
             menu.blit(text, (suradnica_x, suradnica_y))
 
           polozka_pocet += 1
@@ -115,11 +115,11 @@ class Menu():
           suradnica_y = kon.VELKOST_OKNA_Y / 2
 
           text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
-          rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+          rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
           obrazovka.blit(text, (suradnica_x, suradnica_y)) 
 
           if polozka_pocet == self.vybrata_polozka:
-            rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            rect = pygame.draw.rect(obrazovka, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
             obrazovka.blit(text, (suradnica_x, suradnica_y))  
 
           polozka_pocet += 1      
@@ -129,11 +129,13 @@ class Menu():
 
     # Vykreslí koniec hry - text
     def vykresli_koniec(self, obrazovka):
+        POLOZKA_OFSET = 100
+        
         polozka_pocet = 0
-
+        
         while polozka_pocet < len(self.riadky):
           suradnica_x = kon.VELKOST_OKNA_X / 5
-          suradnica_y = kon.VELKOST_OKNA_Y / 5 * polozka_pocet + 100
+          suradnica_y = kon.VELKOST_OKNA_Y / 5 * polozka_pocet + POLOZKA_OFSET
           text = self.font_velky.render(self.riadky[polozka_pocet], 1, self.farba_cierna)
           if polozka_pocet > 0:
             text = self.font_stredny.render(self.riadky[polozka_pocet], 1, self.farba_biela)
@@ -193,7 +195,7 @@ class MenuObchod(Menu):
         self.obchod = False
         self.vybrata_polozka = 0
 
-    # Vykresleni obchodu
+    # Vykreslenie obchodu
     def vykresli_obchod_menu(self, index, cena, meno, extra = ""):
         menu = pygame.Surface((kon.VELKOST_OKNA_X, kon.VELKOST_OKNA_Y))
         menu.blit(self.pozadie, (0, 0))
@@ -229,11 +231,11 @@ class MenuObchod(Menu):
             suradnica_y = 670
 
             text = self.font_polozky.render(self.polozky[polozka_pocet], 1, self.farba_biela)
-            rect = pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+            rect = pygame.draw.rect(menu, self.farba_tlacidlo_neaktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
             menu.blit(text, (suradnica_x, suradnica_y))        
 
             if polozka_pocet == self.vybrata_polozka:
-                rect = pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.tlacidlo_sirka, self.tlacidlo_vyska))
+                rect = pygame.draw.rect(menu, self.farba_tlacidlo_aktivne, (suradnica_x - 10, suradnica_y, self.TLACIDLO_SIRKA, self.TLACIDLO_VYSKA))
                 menu.blit(text, (suradnica_x, suradnica_y))          
 
             polozka_pocet += 1

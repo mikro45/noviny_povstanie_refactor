@@ -11,6 +11,7 @@ class Strela(pygame.sprite.Sprite):
 
     def __init__(self, pozicia):
         pygame.sprite.Sprite.__init__(self)
+        self.DRAHA_STRELY = 31
         # Načítanie a vykreslenie obrázku strely
         self.image = pygame.image.load('obrazky/strela.bmp').convert()
         self.image.set_colorkey((255, 0, 255))
@@ -19,7 +20,7 @@ class Strela(pygame.sprite.Sprite):
 
     def update(self):
         """Umožnuje pohyb (let) strely."""
-        if self.rect.top > 31:
+        if self.rect.top > self.DRAHA_STRELY:
             self.rect.top -= 4
         # Ak je strela mimo obrazovky, tak sa strela odstráni (zabije)
         else:
