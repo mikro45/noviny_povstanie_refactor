@@ -1,6 +1,6 @@
 # git-refactoring-mip-2017-mikro45
 
-by Miroslav Dzuris
+**by Miroslav Dzuris**
 
 Videohra programovana pre rocnikovy projekt na strednej skole.
 
@@ -9,9 +9,10 @@ Medzi urovnami moze hrac nakupovat vylepsenie v obchode za peniaze nazbierane po
 
 Hra bola programovana v Python.
 
-Poznamka: Kedze som zacal pisat commity po Anglicky, tak som to dotiahol az do konca po Anglicky, inac je vsetko po Slovensky
+###### Poznamka: Kedze som zacal pisat commity po Anglicky, tak som to dotiahol az do konca po Anglicky, inac je vsetko po Slovensky
 
-Zoznam zmien:
+
+## Zoznam zmien:
 
 Initial commit
 	- prve nahranie suborov
@@ -60,5 +61,8 @@ Odstranenie magickych premennych
 	- odstranenie magickych premnnych vo vsetkych suboroch programu
 	- plus finalne detaily a kometare
 	
-Update readme
+Update to readme
 	- upload tohto suboru
+	
+Update to readme v2
+	- finalne upravy
