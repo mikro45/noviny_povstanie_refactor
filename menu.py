@@ -139,7 +139,7 @@ class Menu():
             text = self.font_stredny.render(self.riadky[polozka_pocet], 1, self.farba_biela)
           rect = text.get_rect()
           rect.centerx = kon.VELKOST_OKNA_X / 2
-          rect.suradnica_y = suradnica_y
+          rect.y = suradnica_y
           obrazovka.blit(text, rect)
          
           polozka_pocet += 1
