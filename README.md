@@ -15,54 +15,96 @@ Hra bola programovana v Python.
 ## Zoznam zmien:
 
 Initial commit
+
 	- prve nahranie suborov
 
+	
 Odstranenie nepotrebnych suborov a uprava readme
+
 	- odstranenie suborov ako instalacia, build a pod.
 	
+	
 Vratenie spat ikony hry
+
 	- vratenie nechtiac odstranenej ikony hry
+	
 	
 Pridanie .gitignore	
 	- pridanie .gitignore, ktory ignoruje *.pyc subory, ktore Python pri kompilovani vytvara
 	
 Vytvorenie branch "splitting-to-classes";
-	Rozdelenie do tried
+
+
+Rozdelenie do tried
+	
 		- Rozdelenie tried z jedneho suboru do viacerych + zakladna funkcnost
-	Uprava z "from module import *" na "import module"
+		
+Uprava z "from module import *" na "import module"
+	
 		- Zmena systemu importovania na prehladnejsi a praktickejsi
-		Merge do Master
+		
+*Merge do Master*
+
 
 Premenovanie premennych podla konvencii v main
+
 	- premenovanie ako napriklad; suvisiace premnne maju rovnaky prefix, pouzivanie CamelCase a lower_case_with_underscores na spravnych miestach
+
+	
 Premenovanie premennych podla konvencii v triedach
+
 	- podobne ako v main, len v osobitnych triedach
 
+	
 Vytvorenie branch "new_score";
-	Zmena render systemu pre skore na novy
+
+Zmena render systemu pre skore na novy
+	
 		- uprava vykreslovania skore, kedy pred tym bolo skore vykreslovane ako jeden text, teraz su rozne polozky presne urcene
 		- plus odstranenie triedy "SkoreBar", ktore povodne vykreslovalo pozadie pre skore. Teraz je to riesene vsetko v jednom
-	Finalna verzia render systemu pre skore
+		
+Finalna verzia render systemu pre skore
+	
 		- finalne upravy v main + v triede
-		Merge do Master
+		
+*Merge do Master*
+	
 	
 Odstranenie chyby pri konci hry po uprave premennych
+
 	- chyba po automatickom premenovavani
 
 Vytvorenie branch "new_enemy_generator";
-	Zjednodusenie generovania nepriatelov v main metode
+
+
+Zjednodusenie generovania nepriatelov v main metode
+	
 		- povodne bolo generovanie zbytocne rozdelene, teraz je to prehladnejsie, vdaka odstraneniu explicitneho generovania
-		Merge do Master
+		
+*Merge do Master*
+	
 	
 Zjednodusenie nacitavanie obrazkov novin
+
 	- pouzitie funkcie na nacitavanie a globalnych konstant
 
+	
 Odstranenie magickych premennych
+
 	- odstranenie magickych premnnych vo vsetkych suboroch programu
 	- plus finalne detaily a kometare
 	
+	
 Update to readme
+
 	- upload tohto suboru
 	
+	
 Update to readme v2
+
 	- finalne upravy
+
+	
+Update to readme v3
+
+	- finalne finalne upravy
