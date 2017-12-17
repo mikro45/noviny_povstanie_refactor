@@ -404,41 +404,10 @@ def main():
                 
                 # Generovanie 1. úrovne je rozdielne,
                 # pretože pred ňou nemôže byť žiadne menu obchod
-                if uroven_1:
-                    uroven_subor = file("urovne/1/uroven_1_1.txt")
-                    pamat = uroven_subor.readline()
-                    suradnica_y = 0
-                    while pamat != "":
-                      for suradnica_x in xrange(len(pamat)):
-                          if pamat[suradnica_x] == "1":
-                              objekt_noviny.add(noviny.Noviny1(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "2":
-                              objekt_noviny_ozbrojene.add(noviny.Noviny2(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "3":
-                              objekt_noviny.add(noviny.Noviny3(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "4":
-                              objekt_noviny_ozbrojene.add(noviny.Noviny4(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "5":
-                              objekt_noviny_ozbrojene.add(noviny.Noviny5(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "6":
-                              objekt_noviny.add(noviny.Noviny6(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "7":
-                              objekt_noviny_ozbrojene.add(noviny.Noviny7(suradnica_x, suradnica_y))                          
-                          elif pamat[suradnica_x] == "8":
-                              objekt_noviny_bonus.add(n_bonus.NovinyBonus1(suradnica_x, suradnica_y))
-                          elif pamat[suradnica_x] == "9":
-                              objekt_noviny_boss.add(n_boss.NovinyBoss12())
-                              
-                      pamat = uroven_subor.readline()
-                      suradnica_y += 1
-                    uroven_subor.close()
-                    uroven_1 = False
-                   
-                else:
+                if not uroven_1:
                     menu_obchod.polozka_nastav(0)
                     obchod_index = 0
-                    stav = STAV_MENU_OBCHOD             
-                    skore_pod_uroven += 1
+                    stav = STAV_MENU_OBCHOD
 
                     if skore_pod_uroven == 6 and skore_uroven == 2:
                         skore_uroven += 1
@@ -448,48 +417,52 @@ def main():
                         skore_uroven += 1
                         skore_pod_uroven = 1
                         
-                    uroven_cesta = "urovne/" + str(skore_uroven) + "/uroven_" + str(skore_uroven) + "_" + str(skore_pod_uroven)  + ".txt"
-               
-                    try:
-                        skore_peniaze += 150
-                        skore_skore += 500
-                        uroven_subor = file(uroven_cesta)
-                        pamat = uroven_subor.readline()
-                        suradnica_y = 0
-                        while pamat!="":
-                          for suradnica_x in xrange(len(pamat)):
-                              if pamat[suradnica_x] == "1":
-                                  objekt_noviny.add(noviny.Noviny1(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "2":
-                                  objekt_noviny_ozbrojene.add(noviny.Noviny2(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "3":
-                                  objekt_noviny.add(noviny.Noviny3(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "4":
-                                  objekt_noviny_ozbrojene.add(noviny.Noviny4(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "5":
-                                  objekt_noviny_ozbrojene.add(noviny.Noviny5(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "6":
-                                  objekt_noviny.add(noviny.Noviny6(suradnica_x, suradnica_y, skore_uroven))
-                              elif pamat[suradnica_x] == "7":
-                                  objekt_noviny_ozbrojene.add(noviny.Noviny7(suradnica_x, suradnica_y, skore_uroven))                          
-                              elif pamat[suradnica_x] == "8":
-                                  objekt_noviny_bonus.add(n_bonus.NovinyBonus1(suradnica_x, suradnica_y))
-                              elif pamat[suradnica_x] == "9":
-                                  objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
-                              elif pamat[suradnica_x] == "a":
-                                  for suradnica_x in range(0,69):
-                                      objekt_noviny_bonus.add(n_bonus.NovinyBonus2())
-                              elif pamat[suradnica_x] == "b":
-                                  noviny_boss_hp = 150
-                                  objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
-                                                                    
-                          pamat = uroven_subor.readline()
-                          suradnica_y += 1
-                        uroven_subor.close()
-                        
-                    # Ak hráč prejde všetke úrovne, vyhráva
-                    except IOError:
-                        stav = STAV_VYHRA       
+                    skore_peniaze += 150
+                    skore_skore += 500
+                    skore_pod_uroven += 1
+
+                uroven_cesta = "urovne/" + str(skore_uroven) + "/uroven_" + str(skore_uroven) + "_" + str(skore_pod_uroven)  + ".txt"
+                
+                try:                    
+                    uroven_subor = file(uroven_cesta)
+                    pamat = uroven_subor.readline()
+                    stlpec = 0
+                    while pamat!="":
+                      for riadok in xrange(len(pamat)):
+                          if pamat[riadok] == "1":
+                              objekt_noviny.add(noviny.Noviny1(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "2":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny2(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "3":
+                              objekt_noviny.add(noviny.Noviny3(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "4":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny4(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "5":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny5(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "6":
+                              objekt_noviny.add(noviny.Noviny6(riadok, stlpec, skore_uroven))
+                          elif pamat[riadok] == "7":
+                              objekt_noviny_ozbrojene.add(noviny.Noviny7(riadok, stlpec, skore_uroven))                          
+                          elif pamat[riadok] == "8":
+                              objekt_noviny_bonus.add(n_bonus.NovinyBonus1(riadok, stlpec))
+                          elif pamat[riadok] == "9":
+                              objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
+                          elif pamat[riadok] == "a":
+                              for riadok in range(0,69):
+                                  objekt_noviny_bonus.add(n_bonus.NovinyBonus2())
+                          elif pamat[riadok] == "b":
+                              noviny_boss_hp = 150
+                              objekt_noviny_boss.add(n_boss.NovinyBoss12(skore_uroven))
+                                                                
+                      pamat = uroven_subor.readline()
+                      stlpec += 1
+                    uroven_subor.close()
+                    
+                # Ak hráč prejde všetke úrovne, vyhráva
+                except IOError:
+                    stav = STAV_VYHRA
+                    
+                uroven_1 = False
                 
             # Aktualizácia, čiže prevednie akejkoľvek zmeny na objekte
             # a vykreslenie všetkých objektov
