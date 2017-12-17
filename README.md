@@ -30,6 +30,7 @@ Vratenie spat ikony hry
 	
 	
 Pridanie .gitignore	
+
 	- pridanie .gitignore, ktory ignoruje *.pyc subory, ktore Python pri kompilovani vytvara
 	
 Vytvorenie branch "splitting-to-classes";
@@ -37,11 +38,11 @@ Vytvorenie branch "splitting-to-classes";
 
 Rozdelenie do tried
 	
-		- Rozdelenie tried z jedneho suboru do viacerych + zakladna funkcnost
+	- Rozdelenie tried z jedneho suboru do viacerych + zakladna funkcnost
 		
 Uprava z "from module import *" na "import module"
 	
-		- Zmena systemu importovania na prehladnejsi a praktickejsi
+	- Zmena systemu importovania na prehladnejsi a praktickejsi
 		
 *Merge do Master*
 
@@ -60,12 +61,12 @@ Vytvorenie branch "new_score";
 
 Zmena render systemu pre skore na novy
 	
-		- uprava vykreslovania skore, kedy pred tym bolo skore vykreslovane ako jeden text, teraz su rozne polozky presne urcene
-		- plus odstranenie triedy "SkoreBar", ktore povodne vykreslovalo pozadie pre skore. Teraz je to riesene vsetko v jednom
+	- uprava vykreslovania skore, kedy pred tym bolo skore vykreslovane ako jeden text, teraz su rozne polozky presne urcene
+	- plus odstranenie triedy "SkoreBar", ktore povodne vykreslovalo pozadie pre skore. Teraz je to riesene vsetko v jednom
 		
 Finalna verzia render systemu pre skore
 	
-		- finalne upravy v main + v triede
+	- finalne upravy v main + v triede
 		
 *Merge do Master*
 	
@@ -79,7 +80,7 @@ Vytvorenie branch "new_enemy_generator";
 
 Zjednodusenie generovania nepriatelov v main metode
 	
-		- povodne bolo generovanie zbytocne rozdelene, teraz je to prehladnejsie, vdaka odstraneniu explicitneho generovania
+	- povodne bolo generovanie zbytocne rozdelene, teraz je to prehladnejsie, vdaka odstraneniu explicitneho generovania
 		
 *Merge do Master*
 	
@@ -108,3 +109,7 @@ Update to readme v2
 Update to readme v3
 
 	- finalne finalne upravy
+	
+Update to readme v4
+
+	- finalne finalne finalne upravy
