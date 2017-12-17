@@ -14,13 +14,14 @@ class NovinyBonus1(pygame.sprite.Sprite):
         """Pointa bonusového levelu, je pre hráča chytiť čo najviac novín,
             s tým, že má nekonečný počet životov"""
         pygame.sprite.Sprite.__init__(self)
-
+        self.uroven = 1
         # Načítanie všetkých obrázkov z 1. úrovne
         self.obrazok_pole = []
         for obrazok_cislo in range(1, 7):
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s.bmp' % str(obrazok_cislo)).convert())
+            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, obrazok_cislo)).convert())
         for obrazok_cislo in range(3, 7):
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_%s_5.bmp' % str(obrazok_cislo)).convert())
+            # "+ '_5'" pretože existuju aj subory s takym nazvom
+            self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, str(obrazok_cislo) + '_5')).convert())
         self.image = self.obrazok_pole[random.randrange(0,9)]
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
@@ -44,9 +45,9 @@ class NovinyBonus2(pygame.sprite.Sprite):
         """Pointa bonusového levelu, je pre hráča chytiť čo najviac novín,
             s tým, že má nekonečný počet životov"""
         pygame.sprite.Sprite.__init__(self)
-
+        self.uroven = 2;
         # Načítanie náhodného obrázku z 2. úrovne
-        self.image = pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert()
+        self.image = pygame.image.load(kon.NOVINY_CESTA.format(self.uroven, random.randrange(1,27))).convert()
         self.image.set_colorkey((255, 0, 255))
         self.rect = self.image.get_rect()
 

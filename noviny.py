@@ -6,17 +6,41 @@ import random
 import pygame
 from pygame.locals import *
 
+import konstanty as kon
+
+def nacitaj_1_noviny(noviny, uroven):
+    """Výber 1 vhodného obrázku na základe úrovne"""
+    if uroven == 1:
+        image = pygame.image.load(kon.NOVINY_CESTA.format(uroven, noviny)).convert()
+    elif uroven == 2:
+        image = pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,27))).convert()
+    else:
+        image = pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,42))).convert()
+
+    return image
+
+def nacitaj_2_noviny(noviny, uroven):
+    """Výber 2 vhodných obrázkov na základe úrovne"""
+    noviny_animovane = str(noviny) + '_5'
+    obrazok_pole = []
+    if uroven == 1:
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, noviny)).convert())
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, noviny_animovane)).convert())        
+    elif uroven == 2:
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,27))).convert())
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,27))).convert())
+    else:
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,42))).convert())
+        obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,42))).convert())
+    return obrazok_pole
+
 class Noviny1(pygame.sprite.Sprite):
     """Vykresľuje základného nepriateľa - noviny"""    
     def __init__(self, suradnica_x, suradnica_y, uroven = 1):
-        pygame.sprite.Sprite.__init__(self)        
+        pygame.sprite.Sprite.__init__(self)
+        self.noviny = 1
         # Výber vhodného obrázku na základe úrovne    
-        if uroven == 1:
-            self.image = pygame.image.load('obrazky/noviny/uroven_1/noviny_1.bmp').convert()
-        elif uroven == 2:
-            self.image = pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert()
-        else:
-            self.image = pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert()
+        self.image = nacitaj_1_noviny(self.noviny, uroven)
             
         # Určenie farby, ktorá bude slúžiť ako tzv. "alfa kanál"
         self.image.set_colorkey((255, 0, 255))
@@ -55,31 +79,19 @@ class Noviny2(Noviny1):
         # Hlavný dôvod novej triedy, je nový obrázok,
         # no do budúcna sa môžu jej vlastnosti ľubovoľne upravovať.
         Noviny1.__init__(self, suradnica_x, suradnica_y)
-        if uroven == 1:
-            self.image = pygame.image.load('obrazky/noviny/uroven_1/noviny_2.bmp').convert()
-        elif uroven == 2:
-            self.image = pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert()
-        else:
-            self.image = pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert()
-        self.rect.topleft = [self.suradnica_x, self.suradnica_y]
-        self.smer = [2, 3]
+        self.noviny = 2
+        self.image = nacitaj_1_noviny(self.noviny, uroven)
 
 
 class Noviny3(Noviny1):
     """Trieda Noviny3 dedí z Noviny1"""
     def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         Noviny1.__init__(self, suradnica_x, suradnica_y)
+        self.noviny = 3
+        self.DZLKA_ANIMACIE = 600
         # Trieda načítavá 2 obrázky do poľa, aby animácia bola možná.       
-        self.obrazok_pole = []
-        if uroven == 1:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_3.bmp').convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_3_5.bmp').convert())        
-        elif uroven == 2:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-        else:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
+        self.obrazok_pole = nacitaj_2_noviny(self.noviny, uroven)
+        
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [4, 3]
         # Náhodné číslo, ktoré určuje, akú veľkú dráhu objekt vykoná do strán
@@ -108,7 +120,7 @@ class Noviny3(Noviny1):
                 self.pocitadlo_animacie -= 1
                 if self.pocitadlo_animacie < 0:
                     self.pocitadlo_animacie = 1
-                self.cas_animacie += 600
+                self.cas_animacie += self.DZLKA_ANIMACIE
 
 class Noviny4(Noviny1):
     """Trieda Noviny4 dedí z Noviny1"""
@@ -116,16 +128,9 @@ class Noviny4(Noviny1):
         """Trieda je veľmi podobná s triedou Noviny3,
             pohyb je jemne upravený a obrázky zmenené"""
         Noviny1.__init__(self, suradnica_x, suradnica_y)
-        self.obrazok_pole = []
-        if uroven == 1:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_4.bmp').convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_4_5.bmp').convert())        
-        elif uroven == 2:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-        else:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
+        self.noviny = 4
+        self.DZLKA_ANIMACIE = 300
+        self.obrazok_pole = nacitaj_2_noviny(self.noviny, uroven)
         
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [2, 3]
@@ -151,23 +156,16 @@ class Noviny4(Noviny1):
                 self.pocitadlo_animacie -= 1
                 if self.pocitadlo_animacie < 0:
                     self.pocitadlo_animacie = 1
-                self.cas_animacie += 300
+                self.cas_animacie += self.DZLKA_ANIMACIE
 
 class Noviny5(Noviny1):
     """Trieda Noviny5 dedí z Noviny1"""
     def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         """Táto trieda má na možnosť z 2 obrázkov, ktoré náhodne vyberie pri spustení"""
         Noviny1.__init__(self, suradnica_x, suradnica_y)
-        self.obrazok_pole = []
-        if uroven == 1:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_5.bmp').convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_5_5.bmp').convert())        
-        elif uroven == 2:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-        else:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
+        self.noviny = 5
+        self.obrazok_pole = nacitaj_2_noviny(self.noviny, uroven)
+        
         self.image = self.obrazok_pole[random.randrange(0, 2)]
         
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
@@ -205,16 +203,9 @@ class Noviny6(Noviny1):
     """Trieda Noviny6 dedí z Noviny1"""
     def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         Noviny1.__init__(self, suradnica_x, suradnica_y)
-        self.obrazok_pole = []
-        if uroven == 1:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_6.bmp').convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_1/noviny_6_5.bmp').convert())        
-        elif uroven == 2:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
-        else:
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
-            self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
+        self.noviny = 6
+        self.obrazok_pole = nacitaj_2_noviny(self.noviny, uroven)
+        
         self.image = self.obrazok_pole[random.randrange(0, 2)]
         
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
@@ -251,7 +242,8 @@ class Noviny7(Noviny1):
     """Trieda Noviny7 dedí z Noviny1"""
     def __init__(self, suradnica_x, suradnica_y, uroven = 1):
         Noviny1.__init__(self, suradnica_x, suradnica_y)
-        self.obrazok = pygame.image.load('obrazky/noviny/uroven_1/noviny_7.bmp').convert()
+        self.noviny = 7
+        self.obrazok = pygame.image.load(kon.NOVINY_CESTA.format(uroven, self.noviny)).convert()
         self.obrazok_pole = []
         # Animácia skladajúca sa s 5 snímkov
         # Rozdelenie obrázku podľa parametrov a následné vloženie do poľa
@@ -261,10 +253,11 @@ class Noviny7(Noviny1):
                 self.obrazok_pole.append(self.obrazok.subsurface((i, 0, 75, 90)))
         elif uroven == 2:
             for i in range(1, 6):
-                self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_2/noviny_%s.bmp' % str(random.randrange(1,27))).convert())
+                self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,27))).convert())
         else:
             for i in range(1, 6):
-                self.obrazok_pole.append(pygame.image.load('obrazky/noviny/uroven_3/noviny_%s.bmp' % str(random.randrange(1,42))).convert())
+                self.obrazok_pole.append(pygame.image.load(kon.NOVINY_CESTA.format(uroven, random.randrange(1,42))).convert())
+
         self.rect.topleft = [self.suradnica_x, self.suradnica_y]
         self.smer = [4, 3]
         self.draha = 20
